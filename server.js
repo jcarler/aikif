@@ -1,54 +1,77 @@
-var express = require("express");
-var app = express();
-var bodyParser = require("body-parser");
-var mongoOp = require("./models/mongo");
-var router = express.Router();
+// server.js
 
+// BASE SETUP
+// =============================================================================
+
+// call the packages we need
+var express    = require('express');        // call express
+var app        = express();                 // define our app using express
+var bodyParser = require('body-parser');
+var mongoose   = require('mongoose');
+var Deal     = require('./models/deal');
+mongoose.connect('mongodb://localhost/mooj');
+
+// configure app to use bodyParser()
+// this will let us get the data from a POST
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({"extended": false}));
 
-router.get("/", function (req, res) {
-  res.json({"error": false, "message": "Hello World"});
+var port = process.env.PORT || 3000;        // set our port
+
+// ROUTES FOR OUR API
+// =============================================================================
+var router = express.Router();              // get an instance of the express Router
+
+// middleware to use for all requests
+router.use(function(req, res, next) {
+  // do logging
+  console.log('Something is happening.');
+  next(); // make sure we go to the next routes and don't stop here
 });
 
-//route() will allow you to use same path for different HTTP operation.
-//So if you have same URL but with different HTTP OP such as POST,GET etc
-//Then use route() to remove redundant code.
+// test route to make sure everything is working (accessed at GET http://localhost:8080/api)
+router.get('/', function(req, res) {
+  res.json({ message: 'hooray! welcome to our api!' });
+});
 
-router.route("/users")
-  .get(function (req, res) {
-    var response = {};
-    mongoOp.find({}, function (err, data) {
-      // Mongo command to fetch all data from collection.
-      if (err) {
-        response = {"error": true, "message": "Error fetching data"};
-      } else {
-        response = {"error": false, "message": data};
-      }
-      res.json(response);
+// more routes for our API will happen here
+
+// on routes that end in /bears
+// ----------------------------------------------------
+router.route('/deals')
+
+  // create a bear (accessed at POST http://localhost:8080/api/bears)
+  .post(function(req, res) {
+
+    var deal = new Deal();      // create a new instance of the Bear model
+    deal.name = req.body.name;  // set the bears name (comes from the request)
+    deal.description = req.body.description;  // set the bears name (comes from the request)
+
+    // save the bear and check for errors
+    deal.save(function(err) {
+      if (err)
+        res.send(err);
+
+      res.json({ message: 'coucou ça marche!' });
     });
+
   })
-  .post(function (req, res) {
-    var db = new mongoOp();
-    var response = {};
-    // fetch email and password from REST request.
-    // Add strict validation when you use this in Production.
-    db.userEmail = req.body.email;
-    // Hash the password using SHA1 algorithm.
-    db.userPassword = req.body.password;
-    db.save(function (err) {
-      // save() will run insert() command of MongoDB.
-      // it will add new data in collection.
-      if (err) {
-        response = {"error": true, "message": "Error adding data"};
-      } else {
-        response = {"error": false, "message": "Data added"};
-      }
-      res.json(response);
+
+  // get all the bears (accessed at GET http://localhost:8080/api/bears)
+  .get(function(req, res) {
+    Deal.find(function(err, deals) {
+      if (err)
+        res.send(err);
+
+      res.json(deals);
     });
   });
 
+// REGISTER OUR ROUTES -------------------------------
+// all of our routes will be prefixed with /api
 app.use('/', router);
 
-app.listen(3000);
-console.log("Listening to PORT 3000");
+// START THE SERVER
+// =============================================================================
+app.listen(port);
+console.log('Magic happens on port ' + port);
