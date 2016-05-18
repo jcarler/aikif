@@ -9,7 +9,7 @@ var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var mongoose   = require('mongoose');
 var Deal     = require('./models/deal');
-mongoose.connect('mongodb://localhost/mooj');
+mongoose.connect('mongodb://mooj:mooj@ds025792.mlab.com:25792/mooj');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
