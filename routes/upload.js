@@ -22,7 +22,7 @@ router.post('/', function (req, res) {
   upload(req, res, function (err) {
 
     if (err) {
-      return res.end("Error uploading file.");
+      return res.end(err);
     }
 
     var response = {
