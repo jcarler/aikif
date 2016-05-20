@@ -13,7 +13,7 @@ var storage = multer.diskStorage({
 });
 
 // limit file size to 5Mo
-var limits = {fileSize:500000};
+var limits = {fileSize: 500000};
 
 // Accept any files
 var upload = multer({storage: storage, limits: limits}).any();
@@ -25,19 +25,9 @@ router.post('/', function (req, res) {
       return res.end("Error uploading file.");
     }
 
-    var body = JSON.parse(req.body.imageUpload);
-
     var response = {
-      href: body.href,
-      source: body.source,
-      modelCode: body.modelCode,
-      binaries: [
-        {
-          filename: req.files[0].filename,
-          format: 'standard',
-          href: req.protocol + '://' + req.get('host') + '/images/' + req.files[0].filename
-        }
-      ]
+      filename: req.files[0].filename,
+      href: req.protocol + '://' + req.get('host') + '/images/' + req.files[0].filename
     };
 
     res.send(response);
