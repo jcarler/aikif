@@ -5,8 +5,8 @@ var http = require('http');
 var busboy = require('connect-busboy');
 var router = express.Router();
 
-var AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY || 'AKIAJXMYL5G5NZRA2NTQ';
-var AWS_SECRET_KEY = process.env.AWS_SECRET_KEY || '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';
+var AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY;
+var AWS_SECRET_KEY = process.env.AWS_SECRET_KEY;
 var S3_BUCKET = process.env.S3_BUCKET || 'mooj';
 
 // CF Multer doc : https://github.com/expressjs/multer
