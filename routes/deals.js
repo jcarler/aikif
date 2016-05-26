@@ -17,10 +17,13 @@ router.get('/',function (req, res) {
 });
 
 router.post('/',function (req, res) {
+  var date = new Date();
 
   var deal = new Deal();      // create a new instance of the Deal model
   deal.name = req.body.name;
   deal.description = req.body.description;
+  deal.timestamp = date.getTime();
+  deal.imageLink = "";
 
   // save the bear and check for errors
   deal.save(function (err) {
