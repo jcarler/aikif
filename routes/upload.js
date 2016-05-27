@@ -30,17 +30,17 @@ cloudinary.config({
 router.post('/', function (req, res) {
   upload(req, res, function (err) {
 
-    if (err) {
-      return res.end("Error with file", req.files[0]);
-    }
-
     console.log(req.files);
 
     cloudinary.uploader.upload(req.files[0].path,
       function (result) {
         console.log(result);
-        res.send(result);
+        return res.send(result);
       });
+
+    if (err) {
+      return res.end("Error with file", req.files[0]);
+    }
 
 
   })
