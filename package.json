@@ -18,7 +18,6 @@
     "serve-favicon": "~2.3.0",
     "multer": "1.1.0",
     "mongoose": "~4.1.2",
-    "aws-sdk": "*",
-    "connect-busboy":"latest"
+    "cloudinary": "1.3.1"
   }
 }
