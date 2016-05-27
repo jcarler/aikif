@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var upload = require('./routes/upload');
 var deals = require('./routes/deals');
+var busboy = require('connect-busboy');
 
 var app = express();
 
@@ -28,6 +29,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
+app.use(busboy());
 app.use('/images', express.static(__dirname + '/public/uploads'));
 app.use(express.static(__dirname + '/public'));
 

@@ -21,23 +21,47 @@ cloudinary.config({
 
 
 router.post('/', function (req, res) {
-  upload(req, res, function (err) {
+  console.log('loading...');
+  var stream = cloudinary.uploader.upload_stream(function (result) {
+    console.log(result);
+    return res.send(result);
+  });
 
-    if (err) {
-      return res.end("Error with file", req.files[0]);
-    }
+  req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
 
-    cloudinary.v2.uploader.upload_large(req.files[0],
-      function (error, result) {
-        if (err) {
-          return res.end("Error while uploading file", req.files[0]);
-        }
+    file.on('error', function (err) {
+      console.log('error white buffering stream: ', err);
+      return res.send(err);
+    });
 
-        return res.send(result);
-      });
+    file.pipe(stream);
+
+  });
+
+  req.pipe(req.busboy);
+
+  /*upload(req, res, function (err) {
+
+   console.log(req.files[0]);
+   console.log(req.file);
+   console.log(req.files);
+   console.log(req);
+
+   if (err) {
+   return res.end("Error with file", req.files[0]);
+   }
+
+   cloudinary.v2.uploader.upload_large(req.files[0].filename,
+   function (error, result) {
+   if (err) {
+   return res.end("Error while uploading file", req.files[0]);
+   }
+
+   return res.send(result);
+   });
 
 
-  })
+   })*/
 });
 
 module.exports = router;
