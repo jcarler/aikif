@@ -5,14 +5,7 @@ var router = express.Router();
 var cloudinary = require('cloudinary');
 
 // CF Multer doc : https://github.com/expressjs/multer
-var storage = multer.diskStorage({
-  destination: function (req, file, callback) {
-    callback(null, './public/uploads');
-  },
-  filename: function (req, file, callback) {
-    callback(null, Date.now() + file.originalname.substr(file.originalname.length - 15));
-  }
-});
+var storage = multer.memoryStorage();
 
 // limit file size to 5Mo
 var limits = {fileSize: 500000};
@@ -30,16 +23,18 @@ cloudinary.config({
 router.post('/', function (req, res) {
   upload(req, res, function (err) {
 
-    console.log(req.files);
-
-    cloudinary.v2.uploader.upload_large(req.files[0],
-      function (error, result) {
-        return res.send(result);
-      });
-
     if (err) {
       return res.end("Error with file", req.files[0]);
     }
+
+    cloudinary.v2.uploader.upload_large(req.files[0],
+      function (error, result) {
+        if (err) {
+          return res.end("Error while uploading file", req.files[0]);
+        }
+
+        return res.send(result);
+      });
 
 
   })
