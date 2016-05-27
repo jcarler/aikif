@@ -32,9 +32,8 @@ router.post('/', function (req, res) {
 
     console.log(req.files);
 
-    cloudinary.uploader.upload(req.files[0].path,
-      function (result) {
-        console.log(result);
+    cloudinary.v2.uploader.upload_large(req.files[0],
+      function (error, result) {
         return res.send(result);
       });
 
