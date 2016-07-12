@@ -7,4 +7,4 @@ var UserSchema   = new Schema({
   imageLink: String
 });
 
-module.exports = mongoose.model('Deal', UserSchema);
+module.exports = mongoose.model('User', UserSchema);
