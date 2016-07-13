@@ -1,22 +1,34 @@
 var express = require('express');
 var Deal = require('../models/deal');
-var mongoose = require('mongoose');
 
 var router = express.Router();
 
-mongoose.connect('mongodb://mooj:mooj@ds025792.mlab.com:25792/mooj');
 
+router.get('/', function (req, res) {
+  Deal
+    .find()
+    .populate('merchant')
+    .exec(function (err, deals) {
+      if (err)
+        res.send(err);
 
-router.get('/',function (req, res) {
-  Deal.find(function (err, deals) {
-    if (err)
-      res.send(err);
-
-    res.json(deals);
-  });
+      res.json(deals);
+    });
 });
 
-router.post('/',function (req, res) {
+router.get('/:id', function (req, res) {
+  Deal
+    .findById(req.params.id)
+    .populate('merchant')
+    .exec(function (err, deal) {
+      if (err)
+        res.send(err);
+
+      res.json(deal);
+    });
+});
+
+router.post('/', function (req, res) {
   var date = new Date();
 
   var deal = new Deal();      // create a new instance of the Deal model

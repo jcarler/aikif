@@ -9,6 +9,7 @@ var upload = require('./routes/upload');
 var deals = require('./routes/deals');
 var users = require('./routes/users');
 var busboy = require('connect-busboy');
+var mongoose = require('mongoose');
 
 var app = express();
 
@@ -23,6 +24,7 @@ app.use(function(req, res, next) {
   next();
 });
 
+mongoose.connect('mongodb://mooj:mooj@ds025792.mlab.com:25792/mooj');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
