@@ -8,6 +8,7 @@ var routes = require('./routes/index');
 var upload = require('./routes/upload');
 var deals = require('./routes/deals');
 var users = require('./routes/users');
+var merchants = require('./routes/merchants');
 var busboy = require('connect-busboy');
 var mongoose = require('mongoose');
 
@@ -40,6 +41,7 @@ app.use('/', routes);
 app.use('/upload', upload);
 app.use('/deals', deals);
 app.use('/users', users);
+app.use('/merchants', merchants);
 
 
 // catch 404 and forward to error handler

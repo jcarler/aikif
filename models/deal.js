@@ -1,12 +1,12 @@
 
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
+var ObjectId = Schema.ObjectId;
 
 var DealSchema   = new Schema({
   name: String,
   description: String,
   timestamp: Number,
-  imageLink: String,
   merchant: {type: ObjectId, ref: 'Merchant'}
 });
 

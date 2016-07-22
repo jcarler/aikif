@@ -1,12 +1,17 @@
 var express = require('express');
 var Deal = require('../models/deal');
+var Merchant = require('../models/merchant');
 
 var router = express.Router();
 
 
 router.get('/', function (req, res) {
+  var actualTimestamp = new Date().getTime();
+  var lastDayTimestamp = actualTimestamp - 86400;
+
   Deal
     .find()
+    .where('timestamp').gt(lastDayTimestamp)
     .populate('merchant')
     .exec(function (err, deals) {
       if (err)
@@ -31,18 +36,44 @@ router.get('/:id', function (req, res) {
 router.post('/', function (req, res) {
   var date = new Date();
 
-  var deal = new Deal();      // create a new instance of the Deal model
-  deal.name = req.body.name;
-  deal.description = req.body.description;
-  deal.timestamp = date.getTime();
-  deal.imageLink = "";
+  Merchant
+    .find({moojPhone: req.body.moojPhone})
+    .exec(function (err, merchant) {
+      if (err) {
+        console.log(err);
+        res.json(
+          {
+            message: 'Merchant not found'
+          }
+        );
+        res.status(404).end();
+      }
 
-  // save the bear and check for errors
-  deal.save(function (err) {
+      var deal = new Deal();      // create a new instance of the Deal model
+      deal.name = req.body.name;
+      deal.description = req.body.description;
+      deal.timestamp = date.getTime();
+      deal.merchant = merchant._id;
+
+
+      // save the bear and check for errors
+      deal.save(function (err) {
+        if (err)
+          res.send(err);
+
+        res.json({message: 'Deal created'});
+      });
+    });
+
+
+});
+
+router.delete('/', function (req, res) {
+  Deal.remove(function (err) {
     if (err)
       res.send(err);
 
-    res.json({message: 'coucou ça marche!'});
+    res.json({message: 'All deleted'});
   });
 });
 
