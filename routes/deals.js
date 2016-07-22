@@ -7,7 +7,7 @@ var router = express.Router();
 
 router.get('/', function (req, res) {
   var actualTimestamp = new Date().getTime();
-  var lastDayTimestamp = actualTimestamp - 86400;
+  var lastDayTimestamp = actualTimestamp - 86400000;
 
   Deal
     .find()
@@ -53,8 +53,7 @@ router.post('/', function (req, res) {
       deal.name = req.body.name;
       deal.description = req.body.description;
       deal.timestamp = date.getTime();
-      deal.merchant = merchant._id;
-
+      deal.merchant = merchant[0]._id;
 
       // save the bear and check for errors
       deal.save(function (err) {
