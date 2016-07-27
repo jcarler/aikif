@@ -5,13 +5,13 @@ var CompanySchema = new Schema({
   name: String,
   pseudo: String,
   category: String,
-  phone: Number,
+  phone: String,
   email: String,
   adress: String,
   city: String,
   location: String,
-  moojPhone: Number,
-  moomMail: Number,
+  moojPhone: String,
+  moomMail: String,
   imageLink: String
 });
 

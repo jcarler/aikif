@@ -7,13 +7,13 @@ var MerchantSchema = new Schema({
   name: String,
   pseudo: String,
   category: String,
-  phone: Number,
+  phone: String,
   email: String,
   adress: String,
   city: String,
   location: String,
-  moojPhone: Number,
-  moojMail: Number,
+  moojPhone: String,
+  moojMail: String,
   imageLink: String,
   company: {type: ObjectId, ref: 'Company'}
 });
