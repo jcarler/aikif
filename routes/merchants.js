@@ -2,6 +2,8 @@ var express = require('express');
 var Merchant = require('../models/merchant');
 var Company = require('../models/company');
 var Deal = require('../models/deal');
+var mongoose = require('mongoose');
+
 
 var router = express.Router();
 
@@ -115,6 +117,30 @@ router.post('/:id/deals', function (req, res) {
       });
     });
 
+});
+
+router.get('/:id/deals', function (req, res) {
+
+  Merchant.findById(req.params.id, function (err, merchant) {
+    if (err) {
+      console.log(err);
+      res.json({
+        message: 'Merchant not found'
+      });
+      res.status(404).end();
+    }
+
+    Deal
+      .find({
+        merchant: mongoose.Types.ObjectId(merchant._id)
+      })
+      .populate('merchant')
+      .exec(function (err, deals) {
+
+        res.json(deals);
+      });
+
+  })
 });
 
 router.delete('/', function (req, res) {
