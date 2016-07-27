@@ -1,6 +1,7 @@
 var express = require('express');
 var Merchant = require('../models/merchant');
 var Company = require('../models/company');
+var Deal = require('../models/deal');
 
 var router = express.Router();
 
@@ -80,6 +81,39 @@ router.put('/:id', function (req, res) {
       res.json({message: 'Merchant updated'});
     });
   });
+
+});
+
+router.post('/:id/deals', function (req, res) {
+  var date = new Date();
+
+  Merchant
+    .findById(req.params.id)
+    .exec(function (err, merchant) {
+      if (err) {
+        console.log(err);
+        res.json(
+          {
+            message: 'Merchant not found'
+          }
+        );
+        res.status(404).end();
+      }
+
+      var deal = new Deal();      // create a new instance of the Deal model
+      deal.name = req.body.name;
+      deal.description = req.body.description;
+      deal.timestamp = date.getTime();
+      deal.merchant = merchant._id;
+
+      // save the bear and check for errors
+      deal.save(function (err) {
+        if (err)
+          res.send(err);
+
+        res.json({message: 'Deal created'});
+      });
+    });
 
 });
 
