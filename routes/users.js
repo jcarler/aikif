@@ -65,4 +65,13 @@ router.post('/:id/upload', function (req, res) {
   req.pipe(req.busboy);
 });
 
+router.delete('/', function(req, res) {
+  User.remove(function (err) {
+    if (err)
+      res.send(err);
+
+    res.json({message: 'All deleted'});
+  });
+});
+
 module.exports = router;
