@@ -11,7 +11,7 @@ var MerchantSchema = new Schema({
   email: String,
   adress: String,
   city: String,
-  location: String,
+  location: [String],
   moojPhone: String,
   moojMail: String,
   imageLink: String,
