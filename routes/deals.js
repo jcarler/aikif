@@ -76,4 +76,13 @@ router.delete('/', function (req, res) {
   });
 });
 
+router.delete('/:id', function (req, res) {
+  Deal.findByIdAndRemove(req.params.id, function (err) {
+    if (err)
+      res.send(err);
+
+    res.json({message: 'Deal deleted'});
+  });
+});
+
 module.exports = router;

@@ -152,4 +152,13 @@ router.delete('/', function (req, res) {
   });
 });
 
+router.delete('/:id', function (req, res) {
+  Merchant.findByIdAndRemove(req.params.id, function (err) {
+    if (err)
+      res.send(err);
+
+    res.json({message: 'Merchant deleted'});
+  });
+});
+
 module.exports = router;
