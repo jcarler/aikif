@@ -1,14 +1,14 @@
 var express = require('express');
 var Merchant = require('../models/merchant');
-var Company = require('../models/company');
 var Deal = require('../models/deal');
-var mongoose = require('mongoose');
 
 
 var router = express.Router();
 
 
 router.get('/', function (req, res) {
+  var date = new Date();
+
   Merchant
     .find({moojPhone: '0366970527'})
     .exec(function (err, merchant) {
