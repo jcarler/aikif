@@ -31,6 +31,7 @@ router.get('/', function (req, res) {
         deal.timestamp = date.getTime() - dealInjected.timestampGap;
         deal.merchant = merchant[0]._id;
 
+        console.log(deal.name);
         // save the bear and check for errors
         deal.save(function (err) {
           if (err)
