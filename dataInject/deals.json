@@ -3,36 +3,24 @@
     "name": "Café Oz",
     "description": "Happy Hour, toutes les pintes à 4€ jusque 21H",
     "moojPhone": "0320551515",
-    "timestampGap": 18239000
+    "timestampGap": 900000
   },
   {
-    "moojPhone": "0320062890",
+    "name": "L'aeronef",
+    "description": "Concert de GYM dès 21H",
+    "moojPhone": "0320135000",
+    "timestampGap": 4500000
+  },
+  {
     "name": "Quick",
     "description": "Un menu Giant acheté, un mix mania offert",
-    "timestampGap": 2490000
+    "moojPhone": "0320062890",
+    "timestampGap": 40500000
   },
   {
-    "moojPhone": "0320669353",
-    "name": "Amarine",
-    "description": "Venez avant 19H30, le café est offert",
-    "timestampGap": 2304952
-  },
-  {
-    "moojPhone": "0320381262",
     "name": "Subway",
     "description": "Le long, au prix du classique jusque 19H30",
-    "timestampGap": 7543902
-  },
-  {
-    "moojPhone": "0320421475",
-    "name": "La Capsule",
-    "description": "Découvrez la super power, notre bière du mois",
-    "timestampGap": 9839429
-  },
-  {
-    "moojPhone": "0328077072",
-    "name": "Monsieur Jean",
-    "description": "Découvrez notre carte d'été",
-    "timestampGap": 10329303
+    "moojPhone": "0320381262",
+    "timestampGap": 51300000
   }
 ]

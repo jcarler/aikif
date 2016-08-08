@@ -7,11 +7,12 @@ var router = express.Router();
 
 router.get('/', function (req, res) {
   var actualTimestamp = new Date().getTime();
-  var lastDayTimestamp = actualTimestamp - 86400000;
+  var lastDayTimestamp = actualTimestamp - 172800000;
 
   Deal
     .find()
-    //.where('timestamp').gt(lastDayTimestamp)
+    .sort({timestamp : -1})
+    .where('timestamp').gt(lastDayTimestamp)
     .populate('merchant')
     .exec(function (err, deals) {
       if (err)

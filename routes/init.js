@@ -40,7 +40,7 @@ router.get('/', function (req, res) {
       });
   });
 
-  res.send({message: 'Init OK'});
+  res.json({message: 'Init OK'});
 });
 
 module.exports = router;
