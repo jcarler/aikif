@@ -26,7 +26,7 @@ router.get('/', function (req, res) {
       deal.name = 'Test inject';
       deal.description = 'Description';
       deal.timestamp = date.getTime();
-      deal.merchant = merchant._id;
+      deal.merchant = merchant[0]._id;
 
       // save the bear and check for errors
       deal.save(function (err) {
