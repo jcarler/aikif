@@ -1,21 +1,21 @@
 [
   {
+    "name": "Café Oz",
+    "description": "Happy Hour, toutes les pintes à 4€ jusque 21H",
     "moojPhone": "0320551515",
-    "name": "Happy Hour",
-    "description": "toutes les pintes à 4€ jusque 21H",
-    "timestampGap": 20879000
-  },
-  {
-    "moojPhone": "0320135000",
-    "name": "L'aeronef",
-    "description": "Concert de GYM dès 21H",
-    "timestampGap": 3630000
+    "timestampGap": 18239000
   },
   {
     "moojPhone": "0320062890",
     "name": "Quick",
     "description": "Un menu Giant acheté, un mix mania offert",
-    "timestampGap": 490000
+    "timestampGap": 2490000
+  },
+  {
+    "moojPhone": "0320669353",
+    "name": "Amarine",
+    "description": "Venez avant 19H30, le café est offert",
+    "timestampGap": 2304952
   },
   {
     "moojPhone": "0320381262",
@@ -34,17 +34,5 @@
     "name": "Monsieur Jean",
     "description": "Découvrez notre carte d'été",
     "timestampGap": 10329303
-  },
-  {
-    "moojPhone": "0320669353",
-    "name": "Amarine",
-    "description": "Venez avant 19H30, le café est offert",
-    "timestampGap": 2304952
-  },
-  {
-    "moojPhone": "0320556047",
-    "name": "La Petite table",
-    "description": "#pdj Dos caillaud et ses petites légumes : 12€",
-    "timestampGap": 3049304
   }
 ]

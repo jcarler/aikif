@@ -24,8 +24,6 @@ router.get('/', function (req, res) {
           res.status(404).end();
         }
 
-        console.log(merchant);
-
         var date = new Date();
         var deal = new Deal();      // create a new instance of the Deal model
         deal.name = dealInjected.name;
@@ -33,7 +31,6 @@ router.get('/', function (req, res) {
         deal.timestamp = date.getTime() - dealInjected.timestampGap;
         deal.merchant = merchant[0]._id;
 
-        console.log(deal.name);
         // save the bear and check for errors
         deal.save(function (err) {
           if (err)
@@ -43,7 +40,7 @@ router.get('/', function (req, res) {
       });
   });
 
-  res.json({message: 'Init OK'});
+  res.send({message: 'Init OK'});
 });
 
 module.exports = router;
