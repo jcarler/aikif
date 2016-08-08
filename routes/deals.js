@@ -11,7 +11,7 @@ router.get('/', function (req, res) {
 
   Deal
     .find()
-    .where('timestamp').gt(lastDayTimestamp)
+    //.where('timestamp').gt(lastDayTimestamp)
     .populate('merchant')
     .exec(function (err, deals) {
       if (err)
