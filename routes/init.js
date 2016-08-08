@@ -28,7 +28,7 @@ router.get('/', function (req, res) {
         var deal = new Deal();      // create a new instance of the Deal model
         deal.name = dealInjected.name;
         deal.description = dealInjected.description;
-        deal.timestamp = date.getTime();
+        deal.timestamp = date.getTime() - dealInjected.timestampGap;
         deal.merchant = merchant[0]._id;
 
         // save the bear and check for errors
