@@ -24,6 +24,8 @@ router.get('/', function (req, res) {
           res.status(404).end();
         }
 
+        console.log(merchant);
+
         var date = new Date();
         var deal = new Deal();      // create a new instance of the Deal model
         deal.name = dealInjected.name;
