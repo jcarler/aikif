@@ -1,9 +1,11 @@
 var express = require('express');
 var router = express.Router();
+var Merchant = require('../models/merchant');
+var Deal = require('../models/deal');
+
 
 /* GET home page. */
 router.post('/sms', function(req, res, next) {
-  res.send('sms sent');
   console.log(req.body);
 
   var date = new Date();
@@ -32,7 +34,7 @@ router.post('/sms', function(req, res, next) {
         if (err)
           res.send(err);
 
-        res.json({message: 'Deal created'});
+        res.status(200).end();
       });
     });
 
