@@ -14,6 +14,7 @@ var authenticate = require('./routes/authenticate');
 var memberinfo = require('./routes/memberinfo');
 var merchants = require('./routes/merchants');
 var init = require('./routes/init');
+var services = require('./routes/services');
 var busboy = require('connect-busboy');
 var mongoose = require('mongoose');
 var passport = require('passport');
@@ -55,6 +56,7 @@ app.use('/deals', deals);
 app.use('/users', users);
 app.use('/merchants', merchants);
 app.use('/init', init);
+app.use('/services', services);
 
 
 // catch 404 and forward to error handler
