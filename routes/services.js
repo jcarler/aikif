@@ -11,7 +11,7 @@ router.post('/sms', function(req, res, next) {
   var date = new Date();
 
   Merchant
-    .find({moojPhone: '0366970527'})
+    .find({moojPhone: req.body.From})
     .exec(function (err, merchant) {
       if (err) {
         console.log(err);
@@ -24,8 +24,8 @@ router.post('/sms', function(req, res, next) {
       }
 
       var deal = new Deal();      // create a new instance of the Deal model
-      deal.name = 'Test deal by sms';
-      deal.description = 'Sms sent from:' + req.body.From + ', body: ' + req.body.Body ;
+      deal.name = merchant[0].name;
+      deal.description = req.body.Body ;
       deal.timestamp = date.getTime();
       deal.merchant = merchant[0]._id;
 
