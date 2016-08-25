@@ -25,7 +25,7 @@ var config = require('./config/database');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "POST, GET");
   res.header("Access-Control-Allow-Headers", "Origin, Accept, Content-Type, Authorization");
@@ -35,15 +35,20 @@ app.use(function(req, res, next) {
 mongoose.connect(config.database);
 
 // pass passport for configuration
-require('./config/passport')(passport);
+//require('./config/passport')(passport);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true, parameterLimit: 50000}));
 app.use(cookieParser());
-app.use(busboy());
+app.use(busboy({
+  highWaterMark: 2 * 1024 * 1024,
+  limits: {
+    fileSize: 10 * 1024 * 1024
+  }
+}));
 app.use('/images', express.static(__dirname + '/public/uploads'));
 app.use(express.static(__dirname + '/public'));
 
