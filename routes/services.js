@@ -4,10 +4,9 @@ var Merchant = require('../models/merchant');
 var Deal = require('../models/deal');
 
 
+
 /* GET home page. */
 router.post('/sms', function(req, res, next) {
-  console.log(req.body);
-
   var date = new Date();
 
   Merchant
