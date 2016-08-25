@@ -56,11 +56,14 @@ router.post('/', function (req, res) {
     var from_email = new helper.Email('contact.mooj@gmail.com');
     var to_email = new helper.Email(req.body.moojMail);
     var subject = 'Bienvenue sur Mooj!';
-    var content = new helper.Content('text/html', '<h1 style="color:red;">Bonjour ' + req.body.name + '</h1>' +
-      '<p>Bienvenue dans la communauté Mooj. Afin de publier de nouvelles annonces sur notre magnifique application, nous avons enregistré votre numéro de téléphone. Il vous suffit d\'envoyer un simple SMS au 0756795972.<br/>' +
+    var content = new helper.Content('text/html', '<h1 style="color:red;">Bonjour ' + req.body.name + ' !</h1>' +
+      '<p style="font-size:15px;color:rgb(20,20,20)">Bienvenue dans la communauté Mooj :) <br/><br/>' +
+      'Afin de publier de nouvelles annonces sur notre magnifique application, nous avons enregistré votre numéro de téléphone. Il vous suffit d\'envoyer un simple SMS au <a href="tel:+33756795972">0756795972</a>.<br/>' +
       'Top non ? Petit conseil: ajoutez ce numéro à vos contacts pour toujours pouvoir publier !<br/>' +
       'Si vous changez de numéro de téléphone, faites-le nous savoir!<br/><br/>' +
-      'A bientôt sur <a href="http://www.mooj.ovh">Mooj</a></p>');
+      'A bientôt sur <a href="http://www.mooj.ovh">Mooj</a></p>' +
+      '<br/><br/>' +
+      '<h4>Jérémie de Mooj</h4>');
     var mail = new helper.Mail(from_email, subject, to_email, content);
 
     var sg = require('sendgrid')(process.env.sendgrid_api_key);
