@@ -12,7 +12,8 @@ router.get('/', function (req, res) {
   var category = req.query.category;
 
   if (category) {
-    query = {'category': {$in: [category]}}
+
+    query = {'category': {$in: category.split(',')}}
   }
 
   Deal
