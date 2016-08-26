@@ -8,10 +8,16 @@ var router = express.Router();
 router.get('/', function (req, res) {
   var actualTimestamp = new Date().getTime();
   var lastDayTimestamp = actualTimestamp - 172800000;
+  var query = {};
+  var category = req.query.category;
+
+  if (category) {
+    query = {'category': {$in: [category]}}
+  }
 
   Deal
-    .find()
-    .sort({timestamp : -1})
+    .find(query)
+    .sort({timestamp: -1})
     .where('timestamp').gt(lastDayTimestamp)
     .populate('merchant')
     .exec(function (err, deals) {
@@ -55,6 +61,7 @@ router.post('/', function (req, res) {
       deal.description = req.body.description;
       deal.timestamp = date.getTime();
       deal.merchant = merchant[0]._id;
+      deal.category = merchant[0].category;
 
       // save the bear and check for errors
       deal.save(function (err) {

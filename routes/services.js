@@ -27,6 +27,7 @@ router.post('/sms', function(req, res, next) {
       deal.description = req.body.Body ;
       deal.timestamp = date.getTime();
       deal.merchant = merchant[0]._id;
+      deal.category = merchant[0].category;
 
       // save the bear and check for errors
       deal.save(function (err) {

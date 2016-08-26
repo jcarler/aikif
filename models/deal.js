@@ -7,7 +7,8 @@ var DealSchema   = new Schema({
   name: String,
   description: String,
   timestamp: Number,
-  merchant: {type: ObjectId, ref: 'Merchant'}
+  merchant: {type: ObjectId, ref: 'Merchant'},
+  category: [String]
 });
 
 module.exports = mongoose.model('Deal', DealSchema);

@@ -138,6 +138,7 @@ router.post('/:id/deals', function (req, res) {
       deal.description = req.body.description;
       deal.timestamp = date.getTime();
       deal.merchant = merchant._id;
+      deal.category = merchant.category;
 
       // save the bear and check for errors
       deal.save(function (err) {
