@@ -1,6 +1,7 @@
 var express = require('express');
 var Deal = require('../models/deal');
 var Merchant = require('../models/merchant');
+var mongoose = require('mongoose');
 
 var router = express.Router();
 
@@ -12,20 +13,28 @@ router.get('/', function (req, res) {
   var category = req.query.category;
 
   if (category) {
-
     query = {'category': {$in: category.split(',')}}
   }
 
-  Deal
+  Merchant
     .find(query)
-    .sort({timestamp: -1})
-    .where('timestamp').gt(lastDayTimestamp)
-    .populate('merchant')
-    .exec(function (err, deals) {
-      if (err)
-        res.send(err);
+    .exec(function (err, merchants) {
 
-      res.json(deals);
+      merchants.map(function(merchant) {
+        return mongoose.Types.ObjectId(merchant._id);
+      });
+
+      Deal
+        .find({'merchant': {$in: merchants}})
+        .sort({timestamp: -1})
+        .where('timestamp').gt(lastDayTimestamp)
+        .populate('merchant')
+        .exec(function (err, deals) {
+          if (err)
+            res.send(err);
+
+          res.json(deals);
+        });
     });
 });
 
