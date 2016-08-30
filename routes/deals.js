@@ -11,16 +11,36 @@ router.get('/', function (req, res) {
   var lastDayTimestamp = actualTimestamp - 172800000;
   var query = {};
   var category = req.query.category;
+  var location = req.query.location;
 
   if (category) {
-    query = {'category': {$in: category.split(',')}}
+    query.category = {$in: category.split(',')}
+  }
+
+  if (location) {
+    var coords = [+location.split(',')[0],+location.split(',')[1]];
+
+    query.location = {
+      $near: {
+        $geometry: {
+          type: "Point",
+          coordinates: coords
+        }
+      }
+    }
   }
 
   Merchant
     .find(query)
     .exec(function (err, merchants) {
+      if (err)
+        res.send(err);
 
-      merchants.map(function(merchant) {
+      if (!merchants) {
+        return res.status(404).send();
+      }
+
+      merchants.map(function (merchant) {
         return mongoose.Types.ObjectId(merchant._id);
       });
 

@@ -11,11 +11,23 @@ var MerchantSchema = new Schema({
   email: String,
   adress: String,
   city: String,
-  location: [String],
+  location: {
+    'type': {
+      type: String,
+      enum: "Point",
+      default: "Point"
+    },
+    coordinates: {
+      type: [Number],
+      default: [0, 0]
+    }
+  },
   moojPhone: String,
   moojMail: String,
   imageLink: String,
   company: {type: ObjectId, ref: 'Company'}
 });
+
+MerchantSchema.index({location: '2dsphere'});
 
 module.exports = mongoose.model('Merchant', MerchantSchema);

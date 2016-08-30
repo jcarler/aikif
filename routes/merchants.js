@@ -43,7 +43,7 @@ router.post('/', function (req, res) {
   merchant.email = req.body.email;
   merchant.adress = req.body.adress;
   merchant.city = req.body.city;
-  merchant.location = req.body.location;
+  merchant.location.coordinates = req.body.location;
   merchant.moojPhone = req.body.moojPhone;
   merchant.moojMail = req.body.moojMail;
   merchant.imageLink = req.body.imageLink;
@@ -75,9 +75,6 @@ router.post('/', function (req, res) {
     });
 
     sg.API(request, function(error, response) {
-      console.log(response.statusCode);
-      console.log(response.body);
-      console.log(response.headers);
 
       res.status(200).end();
 
