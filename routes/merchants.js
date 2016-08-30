@@ -92,17 +92,17 @@ router.put('/:id', function (req, res) {
     if (err)
       res.send(err);
 
-    merchant.name = req.body.name;
-    merchant.pseudo = req.body.pseudo;
-    merchant.category = req.body.category;
-    merchant.phone = req.body.phone;
-    merchant.email = req.body.email;
-    merchant.adress = req.body.adress;
-    merchant.city = req.body.city;
-    merchant.location = req.body.location;
-    merchant.moojPhone = req.body.moojPhone;
-    merchant.moojMail = req.body.moojMail;
-    merchant.imageLink = req.body.imageLink;
+    merchant.name = req.body.name || merchant.name;
+    merchant.pseudo = req.body.pseudo ||  merchant.pseudo;
+    merchant.category = req.body.category ||  merchant.category;
+    merchant.phone = req.body.phone || merchant.phone;
+    merchant.email = req.body.email || merchant.email;
+    merchant.adress = req.body.adress || merchant.adress;
+    merchant.city = req.body.city || merchant.city;
+    merchant.location.coordinates = req.body.location || merchant.location.coordinates;
+    merchant.moojPhone = req.body.moojPhone || merchant.moojPhone;
+    merchant.moojMail = req.body.moojMail || merchant.moojMail;
+    merchant.imageLink = req.body.imageLink || merchant.imageLink;
 
     merchant.save(function (err) {
       if (err)
