@@ -2,6 +2,7 @@ var express = require('express');
 var Deal = require('../models/deal');
 var Merchant = require('../models/merchant');
 var mongoose = require('mongoose');
+var https = require('https');
 
 var router = express.Router();
 
@@ -19,7 +20,7 @@ router.get('/', function (req, res) {
 
   if (location) {
     var maxDistance = +req.query.distance || 100000;
-    var coords = [+location.split(',')[0],+location.split(',')[1]];
+    var coords = [+location.split(',')[0], +location.split(',')[1]];
 
     query.location = {
       $near: {
@@ -27,7 +28,7 @@ router.get('/', function (req, res) {
           type: "Point",
           coordinates: coords
         },
-        $maxDistance : maxDistance
+        $maxDistance: maxDistance
       }
     }
   }
@@ -54,10 +55,61 @@ router.get('/', function (req, res) {
         .exec(function (err, deals) {
           if (err)
             res.send(err);
+          var results = [];
+          var rawDestinations = [];
 
+          deals.forEach(function (deal) {
+            var ob = deal.toObject();
+            delete ob.__v;
+            delete ob.merchant.__v;
+            rawDestinations.push(ob.merchant.location.coordinates);
+            results.push(ob);
+          });
 
+          if (location) {
 
-          res.json(deals);
+            var origin = location.split(',')[0] + ',' + location.split(',')[1];
+            var destinations = '';
+
+            rawDestinations.forEach(function (coordinate) {
+              destinations = destinations + coordinate[0] + ',' + coordinate[1] + '|'
+            });
+
+            var options = {
+              hostname: 'maps.googleapis.com',
+              port: 443,
+              path: '/maps/api/distancematrix/json?origins=' + origin + '&destinations=' + destinations + '&mode=walking&language=fr-FR&key=AIzaSyC0NG1mGANovrnoM4Xx40ujcpal_kkPhrM',
+              method: 'GET'
+            };
+
+            var req = https.request(options, function (response) {
+
+              var body = '';
+              response.on('data', function (chunk) {
+                body += chunk;
+              });
+
+              response.on('end', function () {
+                var data = JSON.parse(body);
+                console.log('end');
+
+                results.forEach(function (deal, index) {
+                  deal.route = data.rows[0].elements[index];
+                });
+                res.json(results);
+
+              });
+            });
+            req.end();
+
+            req.on('error', function (e) {
+              console.error(e);
+            });
+          }
+          else {
+            res.json(results);
+          }
+
         });
     });
 });
