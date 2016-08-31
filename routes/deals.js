@@ -18,6 +18,7 @@ router.get('/', function (req, res) {
   }
 
   if (location) {
+    var maxDistance = +req.query.distance || 100000;
     var coords = [+location.split(',')[0],+location.split(',')[1]];
 
     query.location = {
@@ -25,7 +26,8 @@ router.get('/', function (req, res) {
         $geometry: {
           type: "Point",
           coordinates: coords
-        }
+        },
+        $maxDistance : maxDistance
       }
     }
   }
@@ -52,6 +54,8 @@ router.get('/', function (req, res) {
         .exec(function (err, deals) {
           if (err)
             res.send(err);
+
+
 
           res.json(deals);
         });
