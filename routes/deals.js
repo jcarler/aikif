@@ -91,11 +91,13 @@ router.get('/', function (req, res) {
 
               response.on('end', function () {
                 var data = JSON.parse(body);
-                console.log('end');
 
-                results.forEach(function (deal, index) {
-                  deal.route = data.rows[0].elements[index];
-                });
+                if(data.rows && data.rows.length >0) {
+                  results.forEach(function (deal, index) {
+                    deal.route = data.rows[0].elements[index];
+                  });
+                }
+
                 res.json(results);
 
               });

@@ -10,8 +10,15 @@ var router = express.Router();
 
 
 router.get('/', function (req, res) {
+  var query = {};
+  var category = req.query.category;
+
+  if (category) {
+    query.category = {$in: category.split(',')}
+  }
+
   Merchant
-    .find()
+    .find(query)
     .populate('company')
     .exec(function (err, merchants) {
       if (err)
