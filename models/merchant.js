@@ -6,7 +6,7 @@ var ObjectId = Schema.ObjectId;
 var MerchantSchema = new Schema({
   name: String,
   pseudo: String,
-  category: [String],
+  category: [{type: ObjectId, ref: 'Category'}],
   phone: String,
   email: String,
   adress: String,
