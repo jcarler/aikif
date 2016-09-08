@@ -92,7 +92,7 @@ router.get('/', function (req, res) {
               response.on('end', function () {
                 var data = JSON.parse(body);
 
-                if(data.rows && data.rows.length >0) {
+                if (data.rows && data.rows.length > 0) {
                   results.forEach(function (deal, index) {
                     deal.route = data.rows[0].elements[index];
                   });
@@ -144,22 +144,37 @@ router.post('/', function (req, res) {
         res.status(404).end();
       }
 
-      var deal = new Deal();      // create a new instance of the Deal model
-      deal.name = req.body.name;
-      deal.description = req.body.description;
-      deal.timestamp = date.getTime();
-      deal.merchant = merchant[0]._id;
-      deal.category = merchant[0].category;
+      if (req.body.description.toLowerCase().indexOf('#supprimerdernier#') >= 0) {
 
-      // save the bear and check for errors
-      deal.save(function (err) {
-        if (err)
-          res.send(err);
+        Deal
+          .findOneAndRemove({
+            merchant: mongoose.Types.ObjectId(merchant[0]._id)
+          })
+          .sort({timestamp: -1})
+          .exec(function (err) {
+            if (err)
+              res.send(err);
 
-        res.json({message: 'Deal created'});
-      });
+            res.status(200).end();
+          });
+      }
+      else {
+
+        var deal = new Deal();      // create a new instance of the Deal model
+        deal.description = req.body.description;
+        deal.timestamp = date.getTime();
+        deal.merchant = merchant[0]._id;
+        deal.category = merchant[0].category;
+
+        // save the bear and check for errors
+        deal.save(function (err) {
+          if (err)
+            res.send(err);
+
+          res.json({message: 'Deal created'});
+        });
+      }
     });
-
 
 });
 

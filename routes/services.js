@@ -28,7 +28,7 @@ router.post('/sms', function (req, res, next) {
       if (sms.toLowerCase().indexOf('#supprimerdernier#') >= 0) {
         Deal
           .findOneAndRemove({
-            merchant: mongoose.Types.ObjectId(merchant._id)
+            merchant: mongoose.Types.ObjectId(merchant[0]._id)
           })
           .sort({timestamp: -1})
           .exec(function (err) {
