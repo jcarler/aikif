@@ -20,6 +20,7 @@ router.get('/', function (req, res) {
   Merchant
     .find(query)
     .populate('company')
+    .populate('category')
     .exec(function (err, merchants) {
       if (err)
         res.send(err);
@@ -32,6 +33,7 @@ router.get('/:id', function (req, res) {
   Merchant
     .findById(req.params.id)
     .populate('company')
+    .populate('category')
     .exec(function (err, merchant) {
       if (err)
         res.send(err);
