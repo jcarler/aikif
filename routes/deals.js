@@ -35,6 +35,7 @@ router.get('/', function (req, res) {
 
   Merchant
     .find(query)
+    .populate('category')
     .exec(function (err, merchants) {
       if (err)
         res.send(err);

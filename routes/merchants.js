@@ -83,7 +83,7 @@ router.post('/', function (req, res) {
       body: mail.toJSON()
     });
 
-    sg.API(request, function(error, response) {
+    sg.API(request, function (error, response) {
 
       res.status(200).end();
 
@@ -91,6 +91,35 @@ router.post('/', function (req, res) {
 
     res.json({message: 'Merchant created'});
   });
+
+});
+
+
+router.post('/bulk', function (req, res) {
+
+  req.body.forEach(function (newMerchant) {
+    var merchant = new Merchant();
+    merchant.name = newMerchant.name;
+    merchant.pseudo = newMerchant.pseudo;
+    merchant.category = newMerchant.category;
+    merchant.phone = newMerchant.phone;
+    merchant.email = newMerchant.email;
+    merchant.adress = newMerchant.adress;
+    merchant.city = newMerchant.city;
+    merchant.location.coordinates = newMerchant.location;
+    merchant.moojPhone = newMerchant.moojPhone;
+    merchant.moojMail = newMerchant.moojMail;
+    merchant.imageLink = newMerchant.imageLink;
+
+    // save the bear and check for errors
+    merchant.save(function (err) {
+      if (err) {
+        res.send(err);
+      }
+    });
+  });
+
+  res.json({message: 'Merchants created'});
 
 });
 
@@ -102,8 +131,8 @@ router.put('/:id', function (req, res) {
       res.send(err);
 
     merchant.name = req.body.name || merchant.name;
-    merchant.pseudo = req.body.pseudo ||  merchant.pseudo;
-    merchant.category = req.body.category ||  merchant.category;
+    merchant.pseudo = req.body.pseudo || merchant.pseudo;
+    merchant.category = req.body.category || merchant.category;
     merchant.phone = req.body.phone || merchant.phone;
     merchant.email = req.body.email || merchant.email;
     merchant.adress = req.body.adress || merchant.adress;
