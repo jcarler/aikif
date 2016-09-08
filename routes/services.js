@@ -38,6 +38,18 @@ router.post('/sms', function (req, res, next) {
             res.status(200).end();
           });
       }
+      else if (sms.toLowerCase().indexOf('#supprimertous#') >= 0) {
+        Deal
+          .findAndRemove({
+            merchant: mongoose.Types.ObjectId(merchant[0]._id)
+          })
+          .exec(function (err) {
+            if (err)
+              res.send(err);
+
+            res.status(200).end();
+          });
+      }
       else {
         var deal = new Deal();      // create a new instance of the Deal model
         deal.description = sms;
