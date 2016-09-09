@@ -201,7 +201,7 @@ router.get('/:id/deals', function (req, res) {
       .find({
         merchant: mongoose.Types.ObjectId(merchant._id)
       })
-      .populate('merchant')
+      .populate('merchant','merchant.category')
       .exec(function (err, deals) {
 
         res.json(deals);

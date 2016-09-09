@@ -35,7 +35,6 @@ router.get('/', function (req, res) {
 
   Merchant
     .find(query)
-    .populate('category')
     .exec(function (err, merchants) {
       if (err)
         res.send(err);
@@ -52,7 +51,7 @@ router.get('/', function (req, res) {
         .find({'merchant': {$in: merchants}})
         .sort({timestamp: -1})
         .where('timestamp').gt(lastDayTimestamp)
-        .populate('merchant')
+        .populate('merchant','merchant.category')
         .exec(function (err, deals) {
           if (err)
             res.send(err);
@@ -120,7 +119,7 @@ router.get('/', function (req, res) {
 router.get('/:id', function (req, res) {
   Deal
     .findById(req.params.id)
-    .populate('merchant')
+    .populate('merchant','merchant.category')
     .exec(function (err, deal) {
       if (err)
         res.send(err);
