@@ -9,16 +9,12 @@ var routes = require('./routes/index');
 var upload = require('./routes/upload');
 var deals = require('./routes/deals');
 var users = require('./routes/users');
-var signup = require('./routes/signup');
-var authenticate = require('./routes/authenticate');
-var memberinfo = require('./routes/memberinfo');
 var merchants = require('./routes/merchants');
 var init = require('./routes/init');
 var services = require('./routes/services');
 var categories = require('./routes/categories');
 var busboy = require('connect-busboy');
 var mongoose = require('mongoose');
-var passport = require('passport');
 var jwt = require('jwt-simple');
 var config = require('./config/database');
 
@@ -34,9 +30,6 @@ app.use(function (req, res, next) {
 });
 
 mongoose.connect(config.database);
-
-// pass passport for configuration
-//require('./config/passport')(passport);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -54,9 +47,6 @@ app.use('/images', express.static(__dirname + '/public/uploads'));
 app.use(express.static(__dirname + '/public'));
 
 app.use('/', routes);
-app.use('/signup', signup);
-app.use('/authenticate', authenticate);
-app.use('/memberinfo', memberinfo);
 app.use('/upload', upload);
 app.use('/deals', deals);
 app.use('/users', users);
