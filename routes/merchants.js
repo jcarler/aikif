@@ -1,7 +1,8 @@
 var express = require('express');
 var Merchant = require('../models/merchant');
-var Company = require('../models/company');
+var User = require('../models/user');
 var Deal = require('../models/deal');
+var Company = require('../models/company');
 var mongoose = require('mongoose');
 var helper = require('sendgrid').mail;
 
@@ -38,9 +39,24 @@ router.get('/:id', function (req, res) {
       if (err)
         res.send(err);
 
-      res.json(merchant);
+      User
+        .find({'following': mongoose.Types.ObjectId(merchant._id)})
+        .exec(function (err, users) {
+          if (err)
+            res.send(err);
+
+          var result = merchant.toObject();
+
+          result.followers = {
+            totalCount: users.length,
+            value: users
+          };
+
+          res.json(result);
+        });
     });
-});
+})
+;
 
 router.post('/', function (req, res) {
 
