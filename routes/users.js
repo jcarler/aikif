@@ -1,71 +1,63 @@
 var express = require('express');
 var User = require('../models/user');
-var mongoose = require('mongoose');
-var cloudinary = require('cloudinary');
 
-cloudinary.config({
-  cloud_name: process.env.cloud_name,
-  api_key: process.env.api_key,
-  api_secret: process.env.api_secret
-});
 var router = express.Router();
 
-//mongoose.connect('mongodb://mooj:mooj@ds025792.mlab.com:25792/mooj');
-
-
 router.get('/', function (req, res) {
-  User.find(function (err, users) {
-    if (err)
-      res.send(err);
+  User
+    .find()
+    .populate('following')
+    .exec(function (err, users) {
+      if (err)
+        res.send(err);
 
-    res.json(users);
-  });
+      res.json(users);
+    });
 });
 
 router.post('/', function (req, res) {
-
   var user = new User();      // create a new instance of the User model
-  user.name = req.body.name;
-  user.imageLink = "";
+  user.following = req.body.following;
 
   // save the bear and check for errors
   user.save(function (err) {
     if (err)
       res.send(err);
 
-    res.json({message: 'coucou ça marche!'});
+    res.json({message: 'User created'});
+  });
+});
+
+router.put('/:id', function (req, res) {
+  User.findById(req.params.id, function (err, user) {
+    if (err)
+      res.send(err);
+
+    user.following = req.body.following || user.following;
+
+    user.save(function (err) {
+      if (err)
+        res.send(err);
+
+      res.json({message: 'User updated'});
+    });
   });
 });
 
 router.get('/:id', function (req, res) {
-  User.findById(req.params.id, function (err, user) {
-    if (err) {
-      res.send(err);
-    }
+  User
+    .findById(req.params.id)
+    .populate('following')
+    .exec(function (err, user) {
+      if (err) {
+        res.send(err);
+      }
 
-    res.json(user);
-  });
-});
-
-router.post('/:id/upload', function (req, res) {
-  var stream = cloudinary.uploader.upload_stream(function (result) {
-    return res.send(result);
-  });
-
-  req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
-
-    file.on('error', function (err) {
-      return res.send(err);
+      res.json(user);
     });
-
-    file.pipe(stream);
-
-  });
-
-  req.pipe(req.busboy);
 });
 
-router.delete('/', function(req, res) {
+router.delete('/', function (req, res) {
   User.remove(function (err) {
     if (err)
       res.send(err);
