@@ -187,6 +187,7 @@ router.post('/:id/deals', function (req, res) {
 });
 
 router.get('/:id/deals', function (req, res) {
+  var maxItems = req.query.limit || 100;
 
   Merchant.findById(req.params.id, function (err, merchant) {
     if (err) {
@@ -209,6 +210,7 @@ router.get('/:id/deals', function (req, res) {
           model: 'Category'
         }
       })
+      .limit(maxItems)
       .exec(function (err, deals) {
 
         res.json(deals);

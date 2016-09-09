@@ -13,6 +13,7 @@ router.get('/', function (req, res) {
   var query = {};
   var category = req.query.category;
   var location = req.query.location;
+  var maxItems = req.query.limit || 100;
 
   if (category) {
     query.category = {$in: category.split(',')}
@@ -50,6 +51,7 @@ router.get('/', function (req, res) {
       Deal
         .find({'merchant': {$in: merchants}})
         .sort({timestamp: -1})
+        .limit(maxItems)
         .where('timestamp').gt(lastDayTimestamp)
         .populate({
           path: 'merchant',
