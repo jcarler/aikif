@@ -5,6 +5,7 @@ var Deal = require('../models/deal');
 var Company = require('../models/company');
 var mongoose = require('mongoose');
 var helper = require('sendgrid').mail;
+var Promise = require('bluebird');
 
 
 var router = express.Router();
@@ -26,7 +27,34 @@ router.get('/', function (req, res) {
       if (err)
         res.send(err);
 
-      res.json(merchants);
+      var merchantsTab = [];
+      var promises = [];
+
+      merchants.forEach(function (merchant) {
+
+        promises.push(
+          User
+            .find({'following': mongoose.Types.ObjectId(merchant._id)})
+            .exec(function (err, users) {
+              if (err)
+                res.send(err);
+
+              var result = merchant.toObject();
+
+              result.followers = {
+                totalCount: users.length,
+                value: users
+              };
+
+              merchantsTab.push(result);
+            })
+        );
+      });
+
+      Promise.all(promises).then(function() {
+        res.json(merchantsTab);
+      });
+
     });
 });
 
