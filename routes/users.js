@@ -24,7 +24,16 @@ router.post('/', function (req, res) {
     if (err)
       res.send(err);
 
-    res.json(user);
+    User
+      .findById(req.params.id)
+      .populate('following')
+      .exec(function (err, user) {
+        if (err) {
+          res.send(err);
+        }
+
+        res.json(user);
+      });
   });
 });
 
@@ -39,7 +48,16 @@ router.put('/:id', function (req, res) {
       if (err)
         res.send(err);
 
-      res.json(user);
+      User
+        .findById(req.params.id)
+        .populate('following')
+        .exec(function (err, user) {
+          if (err) {
+            res.send(err);
+          }
+
+          res.json(user);
+        });
     });
   });
 });
