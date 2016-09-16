@@ -32,16 +32,21 @@ router.put('/:id', function (req, res) {
     if (err)
       res.send(err);
 
-    category.displayName = req.body.displayName || category.displayName;
-    category.code = req.body.code || category.code;
-    category.color = req.body.color || category.color;
+    if(category) {
+      category.displayName = req.body.displayName || category.displayName;
+      category.code = req.body.code || category.code;
+      category.color = req.body.color || category.color;
 
-    category.save(function (err) {
-      if (err)
-        res.send(err);
+      category.save(function (err) {
+        if (err)
+          res.send(err);
 
-      res.json({message: 'Category updated'});
-    });
+        res.json({message: 'Category updated'});
+      });
+    }
+    else {
+      res.json({message: 'Category not found...'});
+    }
   });
 });
 
