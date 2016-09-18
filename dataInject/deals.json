@@ -103,7 +103,7 @@
   },
   {
     "name": "Flam's",
-    "description": "Offre spécial étudiant, -20 % sur présentationde votre carte étudiante",
+    "description": "Offre spécial étudiant, -20 % sur présentation de votre carte étudiante",
     "moojPhone": "0320541838",
     "timestampGap": 23399000
   },
@@ -148,5 +148,131 @@
     "description": "Il reste une chambre, et on vous la fait à 60 €, c'est pas cool ça?",
     "moojPhone": "0320060680",
     "timestampGap": 30599000
+  },
+  {
+    "name": "Calzedonia",
+    "description": "Notre nouvelle collection est arrivé, venez la découvrir!",
+    "moojPhone": "0661877501",
+    "timestampGap": 30119000
+  },
+  {
+    "name": "Bretzel Love",
+    "description": "2 bretzels achetés = le 3e offert",
+    "moojPhone": "0661877502",
+    "timestampGap": 44519000
+  },
+  {
+    "name": "Amarine",
+    "description": "Notre menue Moussaillon a changé, venez avec vous enfants",
+    "moojPhone": "0661877503",
+    "timestampGap": 19319000
+  },
+  {
+    "name": "Fiesta",
+    "description": "20€ en bon d'achat par tranche de 100€, c'est aujourd hui",
+    "moojPhone": "0661877504",
+    "timestampGap": 27239000
+  },
+  {
+    "name": "Body minute",
+    "description": "Suite à une annulation, on a un créneau à 17H, envie d'essayer?",
+    "moojPhone": "0661877505",
+    "timestampGap": 30839000
+  },
+  {
+    "name": "Alain Afflelou",
+    "description": "Pour tout achat, 1 Kit nettoyage gratuit",
+    "moojPhone": "0661877506",
+    "timestampGap": 19079000
+  },
+  {
+    "name": "LCL",
+    "description": "Offres Enfants 0-17 ans : 15€ offerts pour l'ouverture de son premier compte d'épargne",
+    "moojPhone": "0661877507",
+    "timestampGap": 52979000
+  },
+  {
+    "name": "André",
+    "description": "-10% sur notre nouvelle collection",
+    "moojPhone": "0661877508",
+    "timestampGap": 45479000
+  },
+  {
+    "name": "Darjeeling",
+    "description": "Vous cherchez une idée de cadeau, on peut vous aider ;-) ",
+    "moojPhone": "0661877509",
+    "timestampGap": 44279000
+  },
+  {
+    "name": "Autobella",
+    "description": "Une place libre à 16H. Faîtes vos courses, on nettoie votre voiture",
+    "moojPhone": "0661877510",
+    "timestampGap": 31379000
+  },
+  {
+    "name": "Chauss'Mômes",
+    "description": "-20% sur la 2e paire de chaussures",
+    "moojPhone": "0661877511",
+    "timestampGap": 49379000
+  },
+  {
+    "name": "Chucks",
+    "description": "1 gaufre nature offerte dès 12€ d’achat",
+    "moojPhone": "0661877512",
+    "timestampGap": 27779000
+  },
+  {
+    "name": "Le comptoir des Malletiers",
+    "description": "Aujourd'hui, -10% sur la bagagerie Samsonite et Delsey",
+    "moojPhone": "0661877513",
+    "timestampGap": 48179000
+  },
+  {
+    "name": "Général d'Optique",
+    "description": "Le soleil est revenu, pour féter cela on vous offre -10% sur les solaires",
+    "moojPhone": "0661877514",
+    "timestampGap": 47939000
+  },
+  {
+    "name": "Jeff de Bruges",
+    "description": "-10% sur le 2e ballotin acheté",
+    "moojPhone": "0661877515",
+    "timestampGap": 26579000
+  },
+  {
+    "name": "Grand Optical",
+    "description": "-30% sur les montures enfants",
+    "moojPhone": "0661877516",
+    "timestampGap": 48059000
+  },
+  {
+    "name": "Kaporal",
+    "description": "Notre collection capsule est arrivée, venez la découvrir",
+    "moojPhone": "0661877517",
+    "timestampGap": 30059000
+  },
+  {
+    "name": "Jennyfer",
+    "description": "-10€ dès 50€ d'achat",
+    "moojPhone": "0661877518",
+    "timestampGap": 47939000
+  },
+  {
+    "name": "Instan Sun",
+    "description": "Venez découvrir nos nouveles cabines",
+    "moojPhone": "0661877519",
+    "timestampGap": 51779000
+  },
+  {
+    "name": "Jean Louis David",
+    "description": "Entre 14H et 16H, le shampoing est offert",
+    "moojPhone": "0661877520",
+    "timestampGap": 37259000
+  },
+  {
+    "name": "La Chaise longue",
+    "description": "Aujourd hui on vous offre la livraison sur les canapés",
+    "moojPhone": "0661877521",
+    "timestampGap": 50759000
   }
 ]
