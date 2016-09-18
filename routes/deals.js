@@ -127,15 +127,7 @@ router.get('/', function (req, res) {
 
 router.get('/:id', function (req, res) {
   Deal
-    .findById(req.params.id)
-    .populate({
-      path: 'merchant',
-      model: 'Merchant',
-      populate: {
-        path: 'category',
-        model: 'Category'
-      }
-    })
+    .getById(req.params.id)
     .exec(function (err, deal) {
       if (err)
         res.send(err);

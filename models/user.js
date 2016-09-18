@@ -7,4 +7,16 @@ var UserSchema = new Schema({
   following: [{type: ObjectId, ref: 'Merchant'}]
 });
 
+UserSchema.statics.getAll = function () {
+  return this
+    .find({})
+    .populate('following');
+};
+
+UserSchema.statics.getById = function (id) {
+  return this
+    .findById(id)
+    .populate('following');
+};
+
 module.exports = mongoose.model('User', UserSchema);

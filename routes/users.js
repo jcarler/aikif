@@ -1,18 +1,20 @@
 var express = require('express');
 var User = require('../models/user');
+var Merchant = require('../models/merchant');
+var Deal = require('../models/deal');
+var mongoose = require('mongoose');
 
 var router = express.Router();
 
 router.get('/', function (req, res) {
   User
-    .find()
-    .populate('following')
+    .getAll()
     .exec(function (err, users) {
       if (err)
         res.send(err);
 
       res.json(users);
-    });
+    })
 });
 
 router.post('/', function (req, res) {
@@ -25,8 +27,7 @@ router.post('/', function (req, res) {
       res.send(err);
 
     User
-      .findById(req.params.id)
-      .populate('following')
+      .getById(req.params.id)
       .exec(function (err, user) {
         if (err) {
           res.send(err);
@@ -38,40 +39,79 @@ router.post('/', function (req, res) {
 });
 
 router.put('/:id', function (req, res) {
-  User.findById(req.params.id, function (err, user) {
-    if (err)
-      res.send(err);
-
-    user.following = req.body.following || user.following;
-
-    user.save(function (err) {
+  User
+    .findById(req.params.id)
+    .exec(function (err, user) {
       if (err)
         res.send(err);
 
-      User
-        .findById(req.params.id)
-        .populate('following')
-        .exec(function (err, user) {
-          if (err) {
-            res.send(err);
-          }
+      user.following = req.body.following || user.following;
 
-          res.json(user);
-        });
+      user.save(function (err) {
+        if (err)
+          res.send(err);
+
+        User
+          .getById(req.params.id)
+          .exec(function (err, user) {
+            if (err) {
+              res.send(err);
+            }
+
+            res.json(user);
+          });
+      });
     });
-  });
 });
 
 router.get('/:id', function (req, res) {
   User
-    .findById(req.params.id)
-    .populate('following')
+    .getById(req.params.id)
     .exec(function (err, user) {
       if (err) {
         res.send(err);
       }
 
       res.json(user);
+    });
+});
+
+router.get('/:id/deals', function (req, res) {
+  var following;
+
+  User
+    .findById(req.params.id)
+    .exec(function (err, user) {
+      if (err) {
+        res.send(err);
+      }
+
+      following = user.following;
+    })
+    .then(function () {
+
+      var merchants = following.map(function (merchantId) {
+        return mongoose.Types.ObjectId(merchantId);
+      });
+
+      var actualTimestamp = new Date().getTime();
+      var lastDayTimestamp = actualTimestamp - 172800000;
+
+      Deal
+        .find({'merchant': {$in: merchants}})
+        .where('timestamp').gt(lastDayTimestamp)
+        .populate({
+          path: 'merchant',
+          model: 'Merchant',
+          populate: {
+            path: 'category',
+            model: 'Category'
+          }
+        })
+        .exec(function (err, deals) {
+
+          res.json(deals);
+        });
     });
 });
 
