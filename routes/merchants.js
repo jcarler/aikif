@@ -7,7 +7,6 @@ var mongoose = require('mongoose');
 var helper = require('sendgrid').mail;
 var Promise = require('bluebird');
 
-
 var router = express.Router();
 
 
@@ -23,11 +22,11 @@ router.get('/', function (req, res) {
     .find(query)
     .populate('company')
     .populate('category')
+    .lean()
     .exec(function (err, merchants) {
       if (err)
         res.send(err);
 
-      var merchantsTab = [];
       var promises = [];
 
       merchants.forEach(function (merchant) {
@@ -35,26 +34,24 @@ router.get('/', function (req, res) {
         promises.push(
           User
             .find({'following': mongoose.Types.ObjectId(merchant._id)})
-            .exec(function (err, users) {
-              if (err)
-                res.send(err);
+            .exec()
+            .then(function (users) {
 
-              var result = merchant.toObject();
+              var result = merchant;
 
               result.followers = {
                 totalCount: users.length,
                 value: users
               };
-
-              merchantsTab.push(result);
+              return result;
             })
         );
       });
 
-      Promise.all(promises).then(function() {
-        res.json(merchantsTab);
-      });
-
+      return Promise.all(promises)
+        .then(function (prom) {
+          res.json(prom);
+        });
     });
 });
 
