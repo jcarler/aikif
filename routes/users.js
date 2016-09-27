@@ -78,6 +78,15 @@ router.get('/:id', function (req, res) {
 
 router.get('/:id/deals', function (req, res) {
   var following;
+  var query = {};
+  var category = req.query.category;
+
+  var actualTimestamp = new Date().getTime();
+  var lastDayTimestamp = actualTimestamp - 172800000;
+
+  if (category) {
+    query.category = {$in: category.split(',')}
+  }
 
   User
     .findById(req.params.id)
@@ -94,11 +103,10 @@ router.get('/:id/deals', function (req, res) {
         return mongoose.Types.ObjectId(merchantId);
       });
 
-      var actualTimestamp = new Date().getTime();
-      var lastDayTimestamp = actualTimestamp - 172800000;
+      query.merchant = {$in: merchants};
 
       Deal
-        .find({'merchant': {$in: merchants}})
+        .find(query)
         .where('timestamp').gt(lastDayTimestamp)
         .populate({
           path: 'merchant',

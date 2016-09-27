@@ -48,6 +48,10 @@ router.get('/', function (req, res) {
         return mongoose.Types.ObjectId(merchant._id);
       });
 
+      return merchants;
+    })
+    .then(function(merchants) {
+
       Deal
         .find({'merchant': {$in: merchants}})
         .sort({timestamp: -1})
@@ -125,17 +129,6 @@ router.get('/', function (req, res) {
     });
 });
 
-router.get('/:id', function (req, res) {
-  Deal
-    .getById(req.params.id)
-    .exec(function (err, deal) {
-      if (err)
-        res.send(err);
-
-      res.json(deal);
-    });
-});
-
 router.post('/', function (req, res) {
   var date = new Date();
 
@@ -193,6 +186,18 @@ router.delete('/', function (req, res) {
 
     res.json({message: 'All deleted'});
   });
+});
+
+
+router.get('/:id', function (req, res) {
+  Deal
+    .getById(req.params.id)
+    .exec(function (err, deal) {
+      if (err)
+        res.send(err);
+
+      res.json(deal);
+    });
 });
 
 router.delete('/:id', function (req, res) {
