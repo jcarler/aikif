@@ -3,6 +3,8 @@ var User = require('../models/user');
 var Merchant = require('../models/merchant');
 var Deal = require('../models/deal');
 var mongoose = require('mongoose');
+var Promise = require('bluebird');
+var _ = require('lodash');
 
 var router = express.Router();
 
@@ -83,30 +85,64 @@ router.get('/:id/deals', function (req, res) {
 
   var actualTimestamp = new Date().getTime();
   var lastDayTimestamp = actualTimestamp - 172800000;
+  var promises = [];
 
-  if (category) {
-    query.category = {$in: category.split(',')}
-  }
-
-  User
+  promises.push(User
     .findById(req.params.id)
-    .exec(function (err, user) {
-      if (err) {
-        res.send(err);
-      }
+    .exec()
+    .then(function (user) {
 
       following = user.following;
-    })
-    .then(function () {
 
       var merchants = following.map(function (merchantId) {
-        return mongoose.Types.ObjectId(merchantId);
+        return mongoose.Types.ObjectId(merchantId).toString();
       });
 
-      query.merchant = {$in: merchants};
+      return merchants;
+    }));
+
+  if (category) {
+    console.log('category');
+    query.category = {$in: category.split(',')};
+
+    promises.push(Merchant
+      .find(query)
+      .exec()
+      .then(function (merchants) {
+        if (!merchants) {
+          return res.status(404).send();
+        }
+
+        var merchantIds = merchants.map(function (merchant) {
+          //return mongoose.Types.ObjectId(merchant._id);
+          return merchant._id.toString();
+        });
+
+        return merchantIds;
+      }));
+  }
+
+
+  Promise.all(promises)
+    .then(function (promises) {
+
+      var merchants = [];
+
+      if (category) {
+        merchants = _.intersection(promises[0], promises[1]);
+      }
+      else {
+        merchants = promises[0];
+      }
+
+      return merchants.map(function(merchant) {
+        return mongoose.Types.ObjectId(merchant);
+      });
+    })
+    .then(function (merchantIds) {
 
       Deal
-        .find(query)
+        .find({merchant: {$in: merchantIds}})
         .where('timestamp').gt(lastDayTimestamp)
         .populate({
           path: 'merchant',
@@ -116,11 +152,12 @@ router.get('/:id/deals', function (req, res) {
             model: 'Category'
           }
         })
-        .exec(function (err, deals) {
-
+        .exec()
+        .then(function (deals) {
           res.json(deals);
         });
-    });
+
+    })
 });
 
 router.delete('/', function (req, res) {
