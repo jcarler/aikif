@@ -13,6 +13,7 @@ var merchants = require('./routes/merchants');
 var init = require('./routes/init');
 var services = require('./routes/services');
 var categories = require('./routes/categories');
+var macrocategories = require('./routes/macrocategories');
 var busboy = require('connect-busboy');
 var mongoose = require('mongoose');
 var jwt = require('jwt-simple');
@@ -54,6 +55,7 @@ app.use('/merchants', merchants);
 app.use('/init', init);
 app.use('/services', services);
 app.use('/categories', categories);
+app.use('/macrocategories', macrocategories);
 
 
 // catch 404 and forward to error handler

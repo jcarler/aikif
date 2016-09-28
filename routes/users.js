@@ -102,7 +102,6 @@ router.get('/:id/deals', function (req, res) {
     }));
 
   if (category) {
-    console.log('category');
     query.category = {$in: category.split(',')};
 
     promises.push(Merchant
