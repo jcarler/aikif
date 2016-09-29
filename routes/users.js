@@ -83,7 +83,8 @@ router.get('/:id/deals', function (req, res) {
   var query = {};
   var category = req.query.category;
 
-  var actualTimestamp = new Date().getTime();
+  var now = new Date();
+  var actualTimestamp = now.getTime();
   var lastDayTimestamp = actualTimestamp - 172800000;
   var promises = [];
 
@@ -153,7 +154,45 @@ router.get('/:id/deals', function (req, res) {
         })
         .exec()
         .then(function (deals) {
-          res.json(deals);
+
+          var results = [];
+
+          deals.forEach(function (deal) {
+            var ob = deal.toObject();
+            delete ob.__v;
+            delete ob.merchant.__v;
+
+            var dealTime = new Date(ob.timestamp);
+
+            var tmp = now - dealTime;
+
+            var diff = {};                       // Initialisation du retour
+
+            tmp = Math.floor(tmp / 1000);             // Nombre de secondes entre les 2 dates
+            diff.sec = tmp % 60;                    // Extraction du nombre de secondes
+
+            tmp = Math.floor((tmp - diff.sec) / 60);    // Nombre de minutes (partie entière)
+            diff.min = tmp % 60;                    // Extraction du nombre de minutes
+
+            tmp = Math.floor((tmp - diff.min) / 60);    // Nombre d'heures (entières)
+            diff.hour = tmp % 24;                   // Extraction du nombre d'heures
+
+            tmp = Math.floor((tmp - diff.hour) / 24);   // Nombre de jours restants
+            diff.day = tmp;
+
+            ob.time = {
+              raw: ob.timestamp,
+              valueText: (now.getDay() > dealTime.getDay() ? 'Hier à ' : 'Aujourd\'hui à ' )+ dealTime.getHours() + 'h' + dealTime.getMinutes(),
+              differenceText: 'Il y a '+ (diff.hour >= 1 ? diff.hour + 'h' : '') + (diff.min > 0 ? diff.min : '') + (diff.hour >= 1 ? '' : 'mn')
+            };
+
+            delete ob.timestamp;
+
+            results.push(ob);
+          });
+
+
+          res.json(results);
         });
 
     })
