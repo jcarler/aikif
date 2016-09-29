@@ -228,7 +228,7 @@ router.post('/:id/deals', function (req, res) {
 });
 
 router.get('/:id/deals', function (req, res) {
-  var maxItems = req.query.limit || 100;
+  var maxItems = parseInt(req.query.limit) || 100;
   var now = new Date();
 
   Merchant.findById(req.params.id, function (err, merchant) {
