@@ -200,7 +200,6 @@ router.post('/:id/deals', function (req, res) {
     .findById(req.params.id)
     .exec(function (err, merchant) {
       if (err) {
-        console.log(err);
         res.json(
           {
             message: 'Merchant not found'
@@ -229,11 +228,9 @@ router.post('/:id/deals', function (req, res) {
 
 router.get('/:id/deals', function (req, res) {
   var maxItems = parseInt(req.query.limit) || 100;
-  var now = new Date();
 
   Merchant.findById(req.params.id, function (err, merchant) {
     if (err) {
-      console.log(err);
       res.json({
         message: 'Merchant not found'
       });
@@ -262,29 +259,7 @@ router.get('/:id/deals', function (req, res) {
           delete ob.__v;
           delete ob.merchant.__v;
 
-          var dealTime = new Date(ob.timestamp);
-
-          var tmp = now - dealTime;
-
-          var diff = {};                       // Initialisation du retour
-
-          tmp = Math.floor(tmp / 1000);             // Nombre de secondes entre les 2 dates
-          diff.sec = tmp % 60;                    // Extraction du nombre de secondes
-
-          tmp = Math.floor((tmp - diff.sec) / 60);    // Nombre de minutes (partie entière)
-          diff.min = tmp % 60;                    // Extraction du nombre de minutes
-
-          tmp = Math.floor((tmp - diff.min) / 60);    // Nombre d'heures (entières)
-          diff.hour = tmp % 24;                   // Extraction du nombre d'heures
-
-          tmp = Math.floor((tmp - diff.hour) / 24);   // Nombre de jours restants
-          diff.day = tmp;
-
-          ob.time = {
-            raw: ob.timestamp,
-            valueText: (now.getDay() > dealTime.getDay() ? 'Hier à ' : 'Aujourd\'hui à ' )+ dealTime.getHours() + 'h' + dealTime.getMinutes(),
-            differenceText: 'Il y a '+ (diff.hour >= 1 ? diff.hour + 'h' : '') + (diff.min > 0 ? diff.min : '') + (diff.hour >= 1 ? '' : 'mn')
-          };
+          ob.time = deal.getTimestamp();
 
           delete ob.timestamp;
 

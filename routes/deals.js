@@ -3,13 +3,13 @@ var Deal = require('../models/deal');
 var Merchant = require('../models/merchant');
 var mongoose = require('mongoose');
 var https = require('https');
+var rp = require('request-promise');
 
 var router = express.Router();
 
 
 router.get('/', function (req, res) {
-  var now = new Date();
-  var actualTimestamp = now.getTime();
+  var actualTimestamp = new Date().getTime();
   var lastDayTimestamp = actualTimestamp - 172800000;
   var query = {};
   var category = req.query.category;
@@ -37,10 +37,8 @@ router.get('/', function (req, res) {
 
   Merchant
     .find(query)
-    .exec(function (err, merchants) {
-      if (err)
-        res.send(err);
-
+    .exec()
+    .then(function (merchants) {
       if (!merchants) {
         return res.status(404).send();
       }
@@ -66,9 +64,8 @@ router.get('/', function (req, res) {
             model: 'Category'
           }
         })
-        .exec(function (err, deals) {
-          if (err)
-            res.send(err);
+        .exec()
+        .then(function (deals) {
 
           var results = [];
           var rawDestinations = [];
@@ -78,35 +75,15 @@ router.get('/', function (req, res) {
             delete ob.__v;
             delete ob.merchant.__v;
 
-            var dealTime = new Date(ob.timestamp);
-
-            var tmp = now - dealTime;
-
-            var diff = {};                       // Initialisation du retour
-
-            tmp = Math.floor(tmp / 1000);             // Nombre de secondes entre les 2 dates
-            diff.sec = tmp % 60;                    // Extraction du nombre de secondes
-
-            tmp = Math.floor((tmp - diff.sec) / 60);    // Nombre de minutes (partie entière)
-            diff.min = tmp % 60;                    // Extraction du nombre de minutes
-
-            tmp = Math.floor((tmp - diff.min) / 60);    // Nombre d'heures (entières)
-            diff.hour = tmp % 24;                   // Extraction du nombre d'heures
-
-            tmp = Math.floor((tmp - diff.hour) / 24);   // Nombre de jours restants
-            diff.day = tmp;
-
-            ob.time = {
-              raw: ob.timestamp,
-              valueText: (now.getDay() > dealTime.getDay() ? 'Hier à ' : 'Aujourd\'hui à ' ) + dealTime.getHours() + 'h' + dealTime.getMinutes(),
-              differenceText: 'Il y a ' + (diff.hour >= 1 ? diff.hour + 'h' : '') + (diff.min > 0 ? diff.min : '') + (diff.hour >= 1 ? '' : 'mn')
-            };
+            ob.time = deal.getTimestamp();
 
             delete ob.timestamp;
 
             rawDestinations.push(ob.merchant.location.coordinates);
             results.push(ob);
           });
+
+          var finalPromise;
 
           if (location) {
 
@@ -117,43 +94,33 @@ router.get('/', function (req, res) {
               destinations = destinations + coordinate[0] + ',' + coordinate[1] + '|'
             });
 
-            var options = {
-              hostname: 'maps.googleapis.com',
-              port: 443,
-              path: '/maps/api/distancematrix/json?origins=' + origin + '&destinations=' + destinations + '&mode=walking&language=fr-FR&key=AIzaSyC0NG1mGANovrnoM4Xx40ujcpal_kkPhrM',
-              method: 'GET'
-            };
-
-            var req = https.request(options, function (response) {
-
-              var body = '';
-              response.on('data', function (chunk) {
-                body += chunk;
-              });
-
-              response.on('end', function () {
-                var data = JSON.parse(body);
-
+            finalPromise = rp({
+              uri: 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + origin + '&destinations=' + destinations + '&mode=walking&language=fr-FR&key=AIzaSyC0NG1mGANovrnoM4Xx40ujcpal_kkPhrM',
+              headers: {},
+              json: true
+            })
+              .then(function (data) {
                 if (data.rows && data.rows.length > 0) {
                   results.forEach(function (deal, index) {
                     deal.route = data.rows[0].elements[index];
                   });
                 }
 
-                res.json(results);
-
+                return results;
               });
-            });
-            req.end();
 
-            req.on('error', function (e) {
-              console.error(e);
-            });
           }
           else {
-            res.json(results);
+            finalPromise = Promise.resolve(results);
           }
 
+          return finalPromise.then(function(deals) {
+            return deals;
+          });
+
+        })
+        .then(function(deals) {
+          res.json(deals);
         });
     });
 });
