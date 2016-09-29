@@ -14,7 +14,7 @@ router.get('/', function (req, res) {
   var query = {};
   var category = req.query.category;
   var location = req.query.location;
-  var maxItems = req.query.limit || 100;
+  var maxItems = parseInt(req.query.limit) || 100;
 
   if (category) {
     query.category = {$in: category.split(',')}
@@ -98,8 +98,8 @@ router.get('/', function (req, res) {
 
             ob.time = {
               raw: ob.timestamp,
-              valueText: (now.getDay() > dealTime.getDay() ? 'Hier à ' : 'Aujourd\'hui à ' )+ dealTime.getHours() + 'h' + dealTime.getMinutes(),
-              differenceText: 'Il y a '+ (diff.hour >= 1 ? diff.hour + 'h' : '') + (diff.min > 0 ? diff.min : '') + (diff.hour >= 1 ? '' : 'mn')
+              valueText: (now.getDay() > dealTime.getDay() ? 'Hier à ' : 'Aujourd\'hui à ' ) + dealTime.getHours() + 'h' + dealTime.getMinutes(),
+              differenceText: 'Il y a ' + (diff.hour >= 1 ? diff.hour + 'h' : '') + (diff.min > 0 ? diff.min : '') + (diff.hour >= 1 ? '' : 'mn')
             };
 
             delete ob.timestamp;
