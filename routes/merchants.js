@@ -23,9 +23,8 @@ router.get('/', function (req, res) {
     .populate('company')
     .populate('category')
     .lean()
-    .exec(function (err, merchants) {
-      if (err)
-        res.send(err);
+    .exec()
+    .then(function (merchants) {
 
       var promises = [];
 
@@ -44,6 +43,8 @@ router.get('/', function (req, res) {
                 value: users
               };
               return result;
+            }, function (err) {
+              res.send(err);
             })
         );
       });
@@ -51,7 +52,11 @@ router.get('/', function (req, res) {
       return Promise.all(promises)
         .then(function (prom) {
           res.json(prom);
+        }, function (err) {
+          res.send(err);
         });
+    }, function (err) {
+      res.send(err);
     });
 });
 
@@ -60,16 +65,13 @@ router.get('/:id', function (req, res) {
     .findById(req.params.id)
     .populate('company')
     .populate('category')
-    .exec(function (err, merchant) {
-      if (err)
-        res.send(err);
+    .exec()
+    .then(function (merchant) {
 
       User
         .find({'following': mongoose.Types.ObjectId(merchant._id)})
-        .exec(function (err, users) {
-          if (err)
-            res.send(err);
-
+        .exec()
+        .then(function (users) {
           var result = merchant.toObject();
 
           result.followers = {
@@ -78,7 +80,13 @@ router.get('/:id', function (req, res) {
           };
 
           res.json(result);
+
+        }, function (err) {
+          res.send(err);
         });
+
+    }, function (err) {
+      res.send(err);
     });
 })
 ;
@@ -99,39 +107,41 @@ router.post('/', function (req, res) {
   merchant.imageLink = req.body.imageLink;
 
   // save the bear and check for errors
-  merchant.save(function (err) {
-    if (err)
+  merchant
+    .save()
+    .then(function () {
+
+      var from_email = new helper.Email('contact.mooj@gmail.com');
+      var to_email = new helper.Email(req.body.moojMail);
+      var subject = 'Bienvenue sur Mooj!';
+      var content = new helper.Content('text/html', '<h1 style="color:red;">Bonjour ' + req.body.name + ' !</h1>' +
+        '<p style="font-size:15px;color:rgb(20,20,20)">Bienvenue dans la communauté Mooj :) <br/><br/>' +
+        'Afin de publier de nouvelles annonces sur notre magnifique application, nous avons enregistré votre numéro de téléphone. Il vous suffit d\'envoyer un simple SMS au <a href="tel:+33756795972">0756795972</a>.<br/>' +
+        'Top non ? Petit conseil: ajoutez ce numéro à vos contacts pour toujours pouvoir publier !<br/>' +
+        'Si vous changez de numéro de téléphone, faites-le nous savoir!<br/><br/>' +
+        'A bientôt sur <a href="http://www.mooj.ovh">Mooj</a></p>' +
+        '<br/><br/>' +
+        '<h4>Jérémie de Mooj</h4>');
+      var mail = new helper.Mail(from_email, subject, to_email, content);
+
+      var sg = require('sendgrid')(process.env.sendgrid_api_key);
+
+      var request = sg.emptyRequest({
+        method: 'POST',
+        path: '/v3/mail/send',
+        body: mail.toJSON()
+      });
+
+      sg.API(request, function (error, response) {
+
+        res.status(200).end();
+
+      });
+
+      res.json({message: 'Merchant created'});
+    }, function (err) {
       res.send(err);
-
-    var from_email = new helper.Email('contact.mooj@gmail.com');
-    var to_email = new helper.Email(req.body.moojMail);
-    var subject = 'Bienvenue sur Mooj!';
-    var content = new helper.Content('text/html', '<h1 style="color:red;">Bonjour ' + req.body.name + ' !</h1>' +
-      '<p style="font-size:15px;color:rgb(20,20,20)">Bienvenue dans la communauté Mooj :) <br/><br/>' +
-      'Afin de publier de nouvelles annonces sur notre magnifique application, nous avons enregistré votre numéro de téléphone. Il vous suffit d\'envoyer un simple SMS au <a href="tel:+33756795972">0756795972</a>.<br/>' +
-      'Top non ? Petit conseil: ajoutez ce numéro à vos contacts pour toujours pouvoir publier !<br/>' +
-      'Si vous changez de numéro de téléphone, faites-le nous savoir!<br/><br/>' +
-      'A bientôt sur <a href="http://www.mooj.ovh">Mooj</a></p>' +
-      '<br/><br/>' +
-      '<h4>Jérémie de Mooj</h4>');
-    var mail = new helper.Mail(from_email, subject, to_email, content);
-
-    var sg = require('sendgrid')(process.env.sendgrid_api_key);
-
-    var request = sg.emptyRequest({
-      method: 'POST',
-      path: '/v3/mail/send',
-      body: mail.toJSON()
     });
-
-    sg.API(request, function (error, response) {
-
-      res.status(200).end();
-
-    });
-
-    res.json({message: 'Merchant created'});
-  });
 
 });
 
@@ -153,11 +163,13 @@ router.post('/bulk', function (req, res) {
     merchant.imageLink = newMerchant.imageLink;
 
     // save the bear and check for errors
-    merchant.save(function (err) {
-      if (err) {
+    merchant
+      .save()
+      .then(function () {
+        console.log('ok');
+      }, function (err) {
         res.send(err);
-      }
-    });
+      });
   });
 
   res.json({message: 'Merchants created'});
@@ -167,29 +179,33 @@ router.post('/bulk', function (req, res) {
 router.put('/:id', function (req, res) {
 
   // save the bear and check for errors
-  Merchant.findById(req.params.id, function (err, merchant) {
-    if (err)
+  Merchant
+    .findById(req.params.id)
+    .exec()
+    .then(function (merchant) {
+
+      merchant.name = req.body.name || merchant.name;
+      merchant.pseudo = req.body.pseudo || merchant.pseudo;
+      merchant.category = req.body.category || merchant.category;
+      merchant.phone = req.body.phone || merchant.phone;
+      merchant.email = req.body.email || merchant.email;
+      merchant.adress = req.body.adress || merchant.adress;
+      merchant.city = req.body.city || merchant.city;
+      merchant.location.coordinates = req.body.location || merchant.location.coordinates;
+      merchant.moojPhone = req.body.moojPhone || merchant.moojPhone;
+      merchant.moojMail = req.body.moojMail || merchant.moojMail;
+      merchant.imageLink = req.body.imageLink || merchant.imageLink;
+
+      merchant
+        .save()
+        .then(function () {
+          res.json({message: 'Merchant updated'});
+        }, function (err) {
+          res.send(err);
+        });
+    }, function (err) {
       res.send(err);
-
-    merchant.name = req.body.name || merchant.name;
-    merchant.pseudo = req.body.pseudo || merchant.pseudo;
-    merchant.category = req.body.category || merchant.category;
-    merchant.phone = req.body.phone || merchant.phone;
-    merchant.email = req.body.email || merchant.email;
-    merchant.adress = req.body.adress || merchant.adress;
-    merchant.city = req.body.city || merchant.city;
-    merchant.location.coordinates = req.body.location || merchant.location.coordinates;
-    merchant.moojPhone = req.body.moojPhone || merchant.moojPhone;
-    merchant.moojMail = req.body.moojMail || merchant.moojMail;
-    merchant.imageLink = req.body.imageLink || merchant.imageLink;
-
-    merchant.save(function (err) {
-      if (err)
-        res.send(err);
-
-      res.json({message: 'Merchant updated'});
     });
-  });
 
 });
 
@@ -198,15 +214,8 @@ router.post('/:id/deals', function (req, res) {
 
   Merchant
     .findById(req.params.id)
-    .exec(function (err, merchant) {
-      if (err) {
-        res.json(
-          {
-            message: 'Merchant not found'
-          }
-        );
-        res.status(404).end();
-      }
+    .exec()
+    .then(function (merchant) {
 
       var deal = new Deal();      // create a new instance of the Deal model
       deal.name = req.body.name;
@@ -216,12 +225,15 @@ router.post('/:id/deals', function (req, res) {
       deal.category = merchant.category;
 
       // save the bear and check for errors
-      deal.save(function (err) {
-        if (err)
+      deal
+        .save()
+        .then(function () {
+          res.json({message: 'Deal created'});
+        }, function (err) {
           res.send(err);
-
-        res.json({message: 'Deal created'});
-      });
+        });
+    }, function (err) {
+      res.send(err);
     });
 
 });
@@ -229,66 +241,70 @@ router.post('/:id/deals', function (req, res) {
 router.get('/:id/deals', function (req, res) {
   var maxItems = parseInt(req.query.limit) || 100;
 
-  Merchant.findById(req.params.id, function (err, merchant) {
-    if (err) {
-      res.json({
-        message: 'Merchant not found'
-      });
-      res.status(404).end();
-    }
+  Merchant
+    .findById(req.params.id)
+    .exec()
+    .then(function (merchant) {
 
-    Deal
-      .find({
-        merchant: mongoose.Types.ObjectId(merchant._id)
-      })
-      .populate({
-        path: 'merchant',
-        model: 'Merchant',
-        populate: {
-          path: 'category',
-          model: 'Category'
-        }
-      })
-      .limit(maxItems)
-      .exec(function (err, deals) {
+      Deal
+        .find({
+          merchant: mongoose.Types.ObjectId(merchant._id)
+        })
+        .populate({
+          path: 'merchant',
+          model: 'Merchant',
+          populate: {
+            path: 'category',
+            model: 'Category'
+          }
+        })
+        .limit(maxItems)
+        .exec()
+        .then(function (deals) {
 
-        var results = [];
+          var results = [];
 
-        deals.forEach(function (deal) {
-          var ob = deal.toObject();
-          delete ob.__v;
-          delete ob.merchant.__v;
+          deals.forEach(function (deal) {
+            var ob = deal.toObject();
+            delete ob.__v;
+            delete ob.merchant.__v;
 
-          ob.time = deal.getTimestamp();
+            ob.time = deal.getTimestamp();
 
-          delete ob.timestamp;
+            delete ob.timestamp;
 
-          results.push(ob);
+            results.push(ob);
+          });
+
+          res.json(results);
+        }, function (err) {
+          res.send(err);
         });
 
-
-        res.json(results);
-      });
-
-  })
+    }, function (err) {
+      res.send(err);
+    })
 });
 
 router.delete('/', function (req, res) {
-  Merchant.remove(function (err) {
-    if (err)
+  Merchant
+    .remove()
+    .then(function () {
+      res.json({message: 'All deleted'});
+    }, function (err) {
       res.send(err);
-
-    res.json({message: 'All deleted'});
-  });
+    });
 });
 
 router.delete('/:id', function (req, res) {
-  Merchant.findByIdAndRemove(req.params.id, function (err) {
-    if (err)
+  Merchant
+    .findByIdAndRemove(req.params.id)
+    .exec()
+    .then(function () {
+      res.json({message: 'Merchant deleted'});
+    }, function (err) {
       res.send(err);
-
-    res.json({message: 'Merchant deleted'});
-  });
+    });
 });
 
 module.exports = router;

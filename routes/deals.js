@@ -107,6 +107,8 @@ router.get('/', function (req, res) {
                 }
 
                 return results;
+              }, function (err) {
+                res.send(err);
               });
 
           }
@@ -114,14 +116,20 @@ router.get('/', function (req, res) {
             finalPromise = Promise.resolve(results);
           }
 
-          return finalPromise.then(function(deals) {
+          return finalPromise.then(function (deals) {
             return deals;
+          }, function (err) {
+            res.send(err);
           });
 
         })
-        .then(function(deals) {
+        .then(function (deals) {
           res.json(deals);
+        }, function (err) {
+          res.send(err);
         });
+    }, function (err) {
+      res.send(err);
     });
 });
 
@@ -130,17 +138,8 @@ router.post('/', function (req, res) {
 
   Merchant
     .find({moojPhone: req.body.moojPhone})
-    .exec(function (err, merchant) {
-      if (err) {
-        console.log(err);
-        res.json(
-          {
-            message: 'Merchant not found'
-          }
-        );
-        res.status(404).end();
-      }
-
+    .exec()
+    .then(function (merchant) {
       if (req.body.description.toLowerCase().indexOf('#supprimerdernier#') >= 0) {
 
         Deal
@@ -148,11 +147,11 @@ router.post('/', function (req, res) {
             merchant: mongoose.Types.ObjectId(merchant[0]._id)
           })
           .sort({timestamp: -1})
-          .exec(function (err) {
-            if (err)
-              res.send(err);
-
+          .exec()
+          .then(function () {
             res.status(200).end();
+          }, function (err) {
+            res.send(err);
           });
       }
       else {
@@ -164,45 +163,50 @@ router.post('/', function (req, res) {
         deal.category = merchant[0].category;
 
         // save the bear and check for errors
-        deal.save(function (err) {
-          if (err)
+        deal
+          .save()
+          .then(function () {
+            res.json({message: 'Deal created'});
+          }, function (err) {
             res.send(err);
-
-          res.json({message: 'Deal created'});
-        });
+          });
       }
+    }, function (err) {
+      res.send(err);
     });
 
 });
 
 router.delete('/', function (req, res) {
-  Deal.remove(function (err) {
-    if (err)
+  Deal
+    .remove()
+    .then(function () {
+      res.json({message: 'All deleted'});
+    }, function (err) {
       res.send(err);
-
-    res.json({message: 'All deleted'});
-  });
+    });
 });
 
 
 router.get('/:id', function (req, res) {
   Deal
     .getById(req.params.id)
-    .exec(function (err, deal) {
-      if (err)
-        res.send(err);
-
+    .exec()
+    .then(function (deal) {
       res.json(deal);
+    }, function (err) {
+      res.send(err);
     });
 });
 
 router.delete('/:id', function (req, res) {
-  Deal.findByIdAndRemove(req.params.id, function (err) {
-    if (err)
+  Deal
+    .findByIdAndRemove(req.params.id)
+    .then(function () {
+      res.json({message: 'Deal deleted'});
+    }, function (err) {
       res.send(err);
-
-    res.json({message: 'Deal deleted'});
-  });
+    });
 });
 
 module.exports = router;

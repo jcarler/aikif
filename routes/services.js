@@ -13,26 +13,18 @@ router.post('/sms', function (req, res, next) {
   if (sms.toLowerCase().indexOf('#supprimercompte#') >= 0) {
     Merchant
       .findAndRemove({moojPhone: req.body.From})
-      .exec(function (err) {
-        if (err)
-          res.send(err);
-
+      .exec()
+      .then(function () {
         res.status(200).end();
+      }, function (err) {
+        res.send(err);
       });
   }
   else {
     Merchant
       .find({moojPhone: req.body.From})
-      .exec(function (err, merchant) {
-        if (err) {
-          console.log(err);
-          res.json(
-            {
-              message: 'Merchant not found'
-            }
-          );
-          res.status(404).end();
-        }
+      .exec()
+      .then(function (merchant) {
 
         // Supprimer le dernier deal
         if (sms.toLowerCase().indexOf('#supprimerdernier#') >= 0) {
@@ -41,11 +33,11 @@ router.post('/sms', function (req, res, next) {
               merchant: mongoose.Types.ObjectId(merchant[0]._id)
             })
             .sort({timestamp: -1})
-            .exec(function (err) {
-              if (err)
-                res.send(err);
-
+            .exec()
+            .then(function () {
               res.status(200).end();
+            }, function (err) {
+              res.send(err);
             });
         }
         // Supprimer tous les deals
@@ -54,11 +46,11 @@ router.post('/sms', function (req, res, next) {
             .findAndRemove({
               merchant: mongoose.Types.ObjectId(merchant[0]._id)
             })
-            .exec(function (err) {
-              if (err)
-                res.send(err);
-
+            .exec()
+            .then(function () {
               res.status(200).end();
+            }, function (err) {
+              res.send(err);
             });
         }
         else {
@@ -68,13 +60,16 @@ router.post('/sms', function (req, res, next) {
           deal.merchant = merchant[0]._id;
 
           // save the deal and check for errors
-          deal.save(function (err) {
-            if (err)
+          deal
+            .save()
+            .then(function () {
+              res.status(200).end();
+            }, function (err) {
               res.send(err);
-
-            res.status(200).end();
-          });
+            });
         }
+      }, function (err) {
+        res.send(err);
       });
   }
 

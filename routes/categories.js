@@ -5,11 +5,11 @@ var router = express.Router();
 router.get('/', function (req, res) {
   Category
     .find()
-    .exec(function (err, categories) {
-      if (err)
-        res.send(err);
-
+    .exec()
+    .then(function (categories) {
       res.json(categories);
+    }, function (err) {
+      res.send(err);
     });
 });
 
@@ -19,44 +19,49 @@ router.post('/', function (req, res) {
   category.code = req.body.code;
   category.color = req.body.color;
 
-  category.save(function (err) {
-    if (err)
+  category
+    .save()
+    .then(function () {
+      res.json({message: 'Category created'});
+    }, function (err) {
       res.send(err);
-
-    res.json({message: 'Category created'});
-  });
+    });
 });
 
 router.put('/:id', function (req, res) {
-  Category.findById(req.params.id, function (err, category) {
-    if (err)
+  Category
+    .findById(req.params.id)
+    .exec()
+    .then(function (category) {
+      if (category) {
+        category.displayName = req.body.displayName || category.displayName;
+        category.code = req.body.code || category.code;
+        category.color = req.body.color || category.color;
+
+        category
+          .save()
+          .then(function () {
+            res.json({message: 'Category updated'});
+          }, function (err) {
+            res.send(err);
+          });
+      }
+      else {
+        res.json({message: 'Category not found...'});
+      }
+    }, function (err) {
       res.send(err);
-
-    if(category) {
-      category.displayName = req.body.displayName || category.displayName;
-      category.code = req.body.code || category.code;
-      category.color = req.body.color || category.color;
-
-      category.save(function (err) {
-        if (err)
-          res.send(err);
-
-        res.json({message: 'Category updated'});
-      });
-    }
-    else {
-      res.json({message: 'Category not found...'});
-    }
-  });
+    });
 });
 
 router.delete('/:id', function (req, res) {
-  Category.findByIdAndRemove(req.params.id, function (err) {
-    if (err)
+  Category
+    .findByIdAndRemove(req.params.id)
+    .then(function () {
+      res.json({message: 'Category deleted'});
+    }, function (err) {
       res.send(err);
-
-    res.json({message: 'Category deleted'});
-  });
+    });
 });
 
 module.exports = router;

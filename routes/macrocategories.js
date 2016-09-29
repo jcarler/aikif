@@ -7,11 +7,11 @@ router.get('/', function (req, res) {
   MacroCategory
     .find()
     .populate('categories')
-    .exec(function (err, macroCategories) {
-      if (err)
-        res.send(err);
-
+    .exec()
+    .then(function (macroCategories) {
       res.json(macroCategories);
+    }, function (err) {
+      res.send(err);
     });
 });
 
@@ -21,44 +21,50 @@ router.post('/', function (req, res) {
   macroCategory.code = req.body.code;
   macroCategory.categories = req.body.categories;
 
-  macroCategory.save(function (err) {
-    if (err)
+  macroCategory
+    .save()
+    .then(function () {
+      res.json({message: 'MacroCategory created'});
+    }, function (err) {
       res.send(err);
-
-    res.json({message: 'MacroCategory created'});
-  });
+    });
 });
 
 router.put('/:id', function (req, res) {
-  MacroCategory.findById(req.params.id, function (err, macroCategory) {
-    if (err)
+  MacroCategory
+    .findById(req.params.id)
+    .exec()
+    .then(function (macroCategory) {
+
+      if (macroCategory) {
+        macroCategory.displayName = req.body.displayName || macroCategory.displayName;
+        macroCategory.code = req.body.code || macroCategory.code;
+        macroCategory.categories = req.body.categories || macroCategory.categories;
+
+        macroCategory
+          .save()
+          .then(function () {
+            res.json({message: 'MacroCategory updated'});
+          }, function (err) {
+            res.send(err);
+          });
+      }
+      else {
+        res.json({message: 'MacroCategory not found...'});
+      }
+    }, function (err) {
       res.send(err);
-
-    if (macroCategory) {
-      macroCategory.displayName = req.body.displayName || macroCategory.displayName;
-      macroCategory.code = req.body.code || macroCategory.code;
-      macroCategory.categories = req.body.categories || macroCategory.categories;
-
-      macroCategory.save(function (err) {
-        if (err)
-          res.send(err);
-
-        res.json({message: 'MacroCategory updated'});
-      });
-    }
-    else {
-      res.json({message: 'MacroCategory not found...'});
-    }
-  });
+    });
 });
 
 router.delete('/:id', function (req, res) {
-  MacroCategory.findByIdAndRemove(req.params.id, function (err) {
-    if (err)
+  MacroCategory
+    .findByIdAndRemove(req.params.id)
+    .then(function () {
+      res.json({message: 'MacroCategory deleted'});
+    }, function (err) {
       res.send(err);
-
-    res.json({message: 'MacroCategory deleted'});
-  });
+    });
 });
 
 module.exports = router;
