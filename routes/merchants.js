@@ -250,6 +250,7 @@ router.get('/:id/deals', function (req, res) {
         .find({
           merchant: mongoose.Types.ObjectId(merchant._id)
         })
+        .sort({timestamp: -1})
         .populate({
           path: 'merchant',
           model: 'Merchant',

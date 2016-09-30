@@ -39,10 +39,44 @@ DealSchema.methods.getTimestamp = function () {
   tmp = Math.floor((tmp - diff.hour) / 24);   // Nombre de jours restants
   diff.day = tmp;
 
+  var valueText = '';
+
+  if (diff.day <= 1 && now.getDay() === dealTime.getDay()) {
+    valueText = 'Aujourd\'hui';
+  }
+  else if (diff.day < 1 && now.getDay() > dealTime.getDay()) {
+    valueText = 'Hier'
+  }
+  else {
+    switch(dealTime.getDay()){
+      case 0:
+        valueText = 'Dimanche';
+        break;
+      case 1:
+        valueText = 'Lundi';
+        break;
+      case 2:
+        valueText = 'Mardi';
+        break;
+      case 3:
+        valueText = 'Mercredi';
+        break;
+      case 4:
+        valueText = 'Jeudi';
+        break;
+      case 5:
+        valueText = 'Vendredi';
+        break;
+      case 6:
+        valueText = 'Samedi';
+        break;
+    }
+  }
+
   return {
     raw: this.timestamp,
-    valueText: (now.getDay() > dealTime.getDay() ? 'Hier à ' : 'Aujourd\'hui à ' ) + dealTime.getHours() + 'h' + dealTime.getMinutes(),
-    differenceText: 'Il y a ' + (diff.hour >= 1 ? diff.hour + 'h' : '') + (diff.min > 0 ? diff.min : '') + (diff.hour >= 1 ? '' : 'mn')
+    valueText: valueText + ' à ' + dealTime.getHours() + 'h' + dealTime.getMinutes(),
+    differenceText: 'Il y a ' + (diff.day > 0 ? diff.day + 'j ' : '') + (diff.hour >= 1 ? diff.hour + 'h ' : '') + (diff.min > 0 ? diff.min : '') + 'mn'
   };
 
 };
