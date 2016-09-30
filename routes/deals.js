@@ -107,7 +107,7 @@ router.get('/', function (req, res) {
                 }
                 else {
 
-                  function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+                  function getDistanceFromLatLonInM(lat1, lon1, lat2, lon2) {
                     var R = 6371; // Radius of the earth in km
                     var dLat = deg2rad(lat2 - lat1);  // deg2rad below
                     var dLon = deg2rad(lon2 - lon1);
@@ -118,7 +118,7 @@ router.get('/', function (req, res) {
                       ;
                     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
                     var d = R * c; // Distance in km
-                    return Math.round(d * 100) / 100;
+                    return Math.round(d * 1000); // Distance in m
                   }
 
                   function deg2rad(deg) {
@@ -127,20 +127,20 @@ router.get('/', function (req, res) {
 
                   results.forEach(function (deal) {
 
-                    var distance = getDistanceFromLatLonInKm(location.split(',')[0], location.split(',')[1], deal.merchant.location.coordinates[0], deal.merchant.location.coordinates[1]);
-                    var duration = distance * 12;
+                    var distance = getDistanceFromLatLonInM(location.split(',')[0], location.split(',')[1], deal.merchant.location.coordinates[0], deal.merchant.location.coordinates[1]);
+                    var duration = distance / 1000 * 12;
 
                     var realmin = Math.round(duration % 60);
                     var hours = Math.floor(duration / 60);
 
                     deal.route = {
                       distance: {
-                        text: distance < 1 ? (distance === 0 ? '1 m' : distance * 1000 + ' m') : distance + ' km',
-                        value: distance * 1000
+                        text: distance < 1000 ? (distance === 0 ? '1 m' : distance + ' m') : Math.round(distance / 100) / 10 + ' km',
+                        value: distance
                       },
                       duration: {
                         text: (hours > 0 ? hours + ' heure' + (hours > 1 ? 's ' : ' ') : '' ) + (realmin === 0 ? '1' : realmin) + ' minute' + (realmin > 1 ? 's' : ''),
-                        value: duration
+                        value: Math.round(duration)
                       },
                       status: "NOK"
                     };
