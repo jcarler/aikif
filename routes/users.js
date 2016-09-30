@@ -22,6 +22,7 @@ router.get('/', function (req, res) {
 router.post('/', function (req, res) {
   var user = new User();      // create a new instance of the User model
   user.following = req.body.following;
+  user.name = req.body.name || user.name;
 
   // save the bear and check for errors
   user
@@ -47,6 +48,7 @@ router.put('/:id', function (req, res) {
     .then(function (user) {
 
       user.following = req.body.following || user.following;
+      user.name = req.body.name || user.name;
 
       user
         .save()
