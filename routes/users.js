@@ -27,15 +27,8 @@ router.post('/', function (req, res) {
   // save the bear and check for errors
   user
     .save()
-    .then(function () {
-      User
-        .getById(req.params.id)
-        .exec()
-        .then(function (user) {
-          res.json(user);
-        }, function (err) {
-          res.send(err);
-        });
+    .then(function (user) {
+      res.json(user);
     }, function (err) {
       res.send(err);
     });
@@ -52,17 +45,8 @@ router.put('/:id', function (req, res) {
 
       user
         .save()
-        .then(function () {
-
-          User
-            .getById(req.params.id)
-            .exec()
-            .then(function (user) {
-
-              res.json(user);
-            }, function (err) {
-              res.send(err);
-            });
+        .then(function (user) {
+          res.json(user);
         }, function (err) {
           res.send(err);
         });
