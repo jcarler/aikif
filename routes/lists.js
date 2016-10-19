@@ -24,8 +24,8 @@ router.post('/', function (req, res) {
   // save the bear and check for errors
   list
     .save()
-    .then(function (list) {
-      res.json(list);
+    .then(function () {
+      res.json({message: 'List created'});
     }, function (err) {
       res.send(err);
     });
@@ -44,8 +44,8 @@ router.put('/:id', function (req, res) {
 
       list
         .save()
-        .then(function (list) {
-          res.json(list);
+        .then(function () {
+          res.json({message: 'List updated'});
         }, function (err) {
           res.send(err);
         });
