@@ -13,51 +13,72 @@ var router = express.Router();
 router.get('/', function (req, res) {
   var query = {};
   var category = req.query.category;
+  var userId = req.query.userId;
 
   if (category) {
     query.category = {$in: category.split(',')}
   }
 
-  Merchant
-    .find(query)
-    .populate('company')
-    .populate('category')
-    .lean()
-    .exec()
-    .then(function (merchants) {
+  var queryPromise = Promise.resolve(query);
 
-      var promises = [];
+  if (userId) {
+    queryPromise = User
+      .findById(userId)
+      .exec()
+      .then(function (user) {
+        query._id = {$nin: user.following};
 
-      merchants.forEach(function (merchant) {
+        return query;
+      });
+  }
 
-        promises.push(
-          User
-            .find({'following': mongoose.Types.ObjectId(merchant._id)})
-            .exec()
-            .then(function (users) {
+  queryPromise
+    .then(function (query) {
+      Merchant
+        .find(query)
+        .populate('company')
+        .populate('category')
+        .lean()
+        .exec()
+        .then(function (merchants) {
 
-              var result = merchant;
+          console.log(merchants);
 
-              result.followers = {
-                totalCount: users.length,
-                value: users
-              };
-              return result;
+          var promises = [];
+
+          merchants.forEach(function (merchant) {
+
+            promises.push(
+              User
+                .find({'following': mongoose.Types.ObjectId(merchant._id)})
+                .exec()
+                .then(function (users) {
+
+                  var result = merchant;
+
+                  result.followers = {
+                    totalCount: users.length,
+                    value: users
+                  };
+                  return result;
+                }, function (err) {
+                  res.send(err);
+                })
+            );
+          });
+
+          return Promise.all(promises)
+            .then(function (prom) {
+              res.json(prom);
             }, function (err) {
               res.send(err);
-            })
-        );
-      });
-
-      return Promise.all(promises)
-        .then(function (prom) {
-          res.json(prom);
+            });
         }, function (err) {
           res.send(err);
         });
-    }, function (err) {
-      res.send(err);
     });
+
+
 });
 
 router.get('/:id', function (req, res) {
