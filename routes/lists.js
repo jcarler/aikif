@@ -20,6 +20,7 @@ router.post('/', function (req, res) {
   list.description = req.body.description;
   list.city = req.body.city;
   list.merchants = req.body.merchants;
+  list.imageLink = req.body.imageLink;
 
   // save the bear and check for errors
   list
@@ -41,6 +42,7 @@ router.put('/:id', function (req, res) {
       list.description = req.body.description || list.description;
       list.city = req.body.city || list.city;
       list.merchants = req.body.merchants || list.merchants;
+      list.imageLink = req.body.imageLink || list.imageLink;
 
       list
         .save()

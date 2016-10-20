@@ -6,7 +6,8 @@ var ListSchema = new Schema({
   name: String,
   description: String,
   city: String,
-  merchants: [{type: ObjectId, ref: 'Merchant'}]
+  merchants: [{type: ObjectId, ref: 'Merchant'}],
+  imageLink: String
 });
 
 ListSchema.statics.getAll = function () {
