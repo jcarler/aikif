@@ -42,8 +42,6 @@ router.get('/', function (req, res) {
         .exec()
         .then(function (merchants) {
 
-          console.log(merchants);
-
           var promises = [];
 
           merchants.forEach(function (merchant) {

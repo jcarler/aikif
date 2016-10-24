@@ -28,14 +28,9 @@ router.post('/', function (req, res) {
   user
     .save()
     .then(function (user) {
-      user
-        .populate({path: "following", model: "Merchant"})
-        .exec()
-        .then(function (user) {
-          res.json(user);
-        }, function (err) {
-          res.send(err);
-        });
+      res.json(user);
+    }, function (err) {
+      res.send(err);
     });
 });
 
@@ -51,14 +46,9 @@ router.put('/:id', function (req, res) {
       user
         .save()
         .then(function (user) {
-          user
-            .populate({path: "following", model: "Merchant"})
-            .exec()
-            .then(function (user) {
-              res.json(user);
-            }, function (err) {
-              res.send(err);
-            });
+          res.json(user);
+        }, function (err) {
+          res.send(err);
         });
     }, function (err) {
       res.send(err);
