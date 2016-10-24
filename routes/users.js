@@ -28,7 +28,7 @@ router.post('/', function (req, res) {
   user
     .save()
     .then(function (user) {
-      return User
+      User
         .populate(user, {path: "following"})
         .exec()
         .then(function (user) {
@@ -51,7 +51,7 @@ router.put('/:id', function (req, res) {
       user
         .save()
         .then(function (user) {
-          return User.populate(user, {path: "following"})
+          User.populate(user, {path: "following"})
             .exec()
             .then(function (user) {
               res.json(user);
