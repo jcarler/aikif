@@ -28,8 +28,8 @@ router.post('/', function (req, res) {
   user
     .save()
     .then(function (user) {
-      User
-        .populate(user, {path: "following"})
+      user
+        .populate({path: "following", model: "Merchant"})
         .exec()
         .then(function (user) {
           res.json(user);
@@ -51,7 +51,8 @@ router.put('/:id', function (req, res) {
       user
         .save()
         .then(function (user) {
-          User.populate(user, {path: "following"})
+          user
+            .populate({path: "following", model: "Merchant"})
             .exec()
             .then(function (user) {
               res.json(user);
