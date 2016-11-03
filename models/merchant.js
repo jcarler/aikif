@@ -25,6 +25,13 @@ var MerchantSchema = new Schema({
   moojPhone: String,
   moojMail: String,
   imageLink: String,
+  preferences: {
+    call: Boolean
+  },
+  externalLinks: [{
+    code: String,
+    href: String
+  }],
   company: {type: ObjectId, ref: 'Company'}
 });
 

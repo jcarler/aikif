@@ -124,6 +124,8 @@ router.post('/', function (req, res) {
   merchant.moojPhone = req.body.moojPhone;
   merchant.moojMail = req.body.moojMail;
   merchant.imageLink = req.body.imageLink;
+  merchant.preferences = req.body.preferences;
+  merchant.externalLinks = req.body.externalLinks;
 
   // save the bear and check for errors
   merchant
@@ -180,6 +182,8 @@ router.post('/bulk', function (req, res) {
     merchant.moojPhone = newMerchant.moojPhone;
     merchant.moojMail = newMerchant.moojMail;
     merchant.imageLink = newMerchant.imageLink;
+    merchant.preferences = req.body.preferences;
+    merchant.externalLinks = req.body.externalLinks;
 
     // save the bear and check for errors
     merchant
@@ -214,6 +218,8 @@ router.put('/:id', function (req, res) {
       merchant.moojPhone = req.body.moojPhone || merchant.moojPhone;
       merchant.moojMail = req.body.moojMail || merchant.moojMail;
       merchant.imageLink = req.body.imageLink || merchant.imageLink;
+      merchant.preferences = req.body.preferences || merchant.preferences;
+      merchant.externalLinks = req.body.externalLinks || merchant.externalLinks;
 
       merchant
         .save()

@@ -5,6 +5,10 @@ var ObjectId = Schema.ObjectId;
 var DealSchema = new Schema({
   description: String,
   timestamp: Number,
+  actions: [{
+    code: String,
+    href: String
+  }],
   merchant: {type: ObjectId, ref: 'Merchant'}
 });
 
@@ -48,7 +52,7 @@ DealSchema.methods.getTimestamp = function () {
     valueText = 'Hier'
   }
   else {
-    switch(dealTime.getDay()){
+    switch (dealTime.getDay()) {
       case 0:
         valueText = 'Dimanche';
         break;

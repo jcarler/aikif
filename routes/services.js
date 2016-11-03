@@ -55,6 +55,13 @@ router.post('/sms', function (req, res, next) {
         }
         else {
           var deal = new Deal();      // create a new instance of the Deal model
+
+          deal.actions = merchant.externalLinks;
+
+          if ((merchant.preferences && merchant.preferences.call) || sms.toLowerCase().indexOf('#call#') >= 0) {
+            deal.actions.push({code: 'call', href: 'tel:' + merchant.phone});
+          }
+
           deal.description = sms;
           deal.timestamp = date.getTime();
           deal.merchant = merchant[0]._id;
