@@ -64,7 +64,8 @@ router.post('/sms', function (req, res, next) {
 
           if (sms.toLowerCase().indexOf('#call#') >= 0) {
             // remove tag
-            sms = sms.slice(sms.toLowerCase().indexOf('#call#'), 6);
+
+            sms = sms.replace('#call#', '');
           }
 
           deal.description = sms;
