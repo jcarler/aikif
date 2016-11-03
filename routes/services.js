@@ -62,6 +62,11 @@ router.post('/sms', function (req, res, next) {
 
           deal.actions.call = (merchant.preferences && merchant.preferences.call) || sms.toLowerCase().indexOf('#call#') >= 0;
 
+          if (sms.toLowerCase().indexOf('#call#') >= 0) {
+            // remove tag
+            sms = sms.slice(sms.toLowerCase().indexOf('#call#'), 6);
+          }
+
           deal.description = sms;
           deal.timestamp = date.getTime();
           deal.merchant = merchant[0]._id;
