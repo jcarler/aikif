@@ -6,12 +6,7 @@ var DealSchema = new Schema({
   description: String,
   timestamp: Number,
   actions: {
-    call: Boolean,
-    external: [{
-      code: String,
-      name: String,
-      href: String
-    }]
+    call: Boolean
   },
   merchant: {type: ObjectId, ref: 'Merchant'}
 });

@@ -56,15 +56,12 @@ router.post('/sms', function (req, res, next) {
         else {
           var deal = new Deal();      // create a new instance of the Deal model
 
-          deal.actions = {
-            external: merchant.externalLinks
-          };
+          deal.actions = {};
 
           deal.actions.call = (merchant.preferences && merchant.preferences.call) || sms.toLowerCase().indexOf('#call#') >= 0;
 
           if (sms.toLowerCase().indexOf('#call#') >= 0) {
             // remove tag
-
             sms = sms.replace('#call#', '');
           }
 
