@@ -30,6 +30,7 @@ var MerchantSchema = new Schema({
   },
   externalLinks: [{
     code: String,
+    name: String,
     href: String
   }],
   company: {type: ObjectId, ref: 'Company'}

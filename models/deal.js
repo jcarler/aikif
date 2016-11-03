@@ -5,10 +5,14 @@ var ObjectId = Schema.ObjectId;
 var DealSchema = new Schema({
   description: String,
   timestamp: Number,
-  actions: [{
-    code: String,
-    href: String
-  }],
+  actions: {
+    call: Boolean,
+    external: [{
+      code: String,
+      name: String,
+      href: String
+    }]
+  },
   merchant: {type: ObjectId, ref: 'Merchant'}
 });
 
