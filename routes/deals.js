@@ -4,6 +4,7 @@ var Merchant = require('../models/merchant');
 var mongoose = require('mongoose');
 var https = require('https');
 var rp = require('request-promise');
+var dealService = require('../services/dealService');
 
 var router = express.Router();
 
@@ -176,43 +177,10 @@ router.get('/', function (req, res) {
 });
 
 router.post('/', function (req, res) {
-  var date = new Date();
 
-  Merchant
-    .find({moojPhone: req.body.moojPhone})
-    .exec()
-    .then(function (merchant) {
-      if (req.body.description.toLowerCase().indexOf('#supprimerdernier#') >= 0) {
-
-        Deal
-          .findOneAndRemove({
-            merchant: mongoose.Types.ObjectId(merchant[0]._id)
-          })
-          .sort({timestamp: -1})
-          .exec()
-          .then(function () {
-            res.status(200).end();
-          }, function (err) {
-            res.send(err);
-          });
-      }
-      else {
-
-        var deal = new Deal();      // create a new instance of the Deal model
-        deal.description = req.body.description;
-        deal.timestamp = date.getTime();
-        deal.merchant = merchant[0]._id;
-        deal.category = merchant[0].category;
-
-        // save the bear and check for errors
-        deal
-          .save()
-          .then(function () {
-            res.json({message: 'Deal created'});
-          }, function (err) {
-            res.send(err);
-          });
-      }
+  dealService.createDeal(req.body.moojPhone, req.body.description)
+    .then(function () {
+      res.status(200).end();
     }, function (err) {
       res.send(err);
     });
@@ -252,3 +220,4 @@ router.delete('/:id', function (req, res) {
 });
 
 module.exports = router;
+
