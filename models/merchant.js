@@ -26,7 +26,9 @@ var MerchantSchema = new Schema({
   moojMail: String,
   imageLink: String,
   preferences: {
-    call: Boolean
+    call: Boolean,
+    uber: Boolean,
+    lafourchette: Boolean
   },
   externalLinks: [{
     code: String,

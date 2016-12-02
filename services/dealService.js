@@ -2,10 +2,9 @@ var mongoose = require('mongoose');
 var Merchant = require('../models/merchant');
 var Deal = require('../models/deal');
 
-var tags = ['#appeler#'];
+var tags = ['#appeler#', '#uber#', '#fourchette#'];
 
 function filterTags(sms) {
-
   tags.forEach(function (tag) {
     if (sms.toLowerCase().indexOf(tag) >= 0) {
       // remove tag
@@ -16,10 +15,14 @@ function filterTags(sms) {
   return sms;
 }
 
+function hasTag(message, tag) {
+  return message.toLowerCase().indexOf(tag) >= 0;
+}
+
 var createDeal = function (phone, message, timestamp) {
   var date = new Date();
 
-  if (message.toLowerCase().indexOf('#supprimercompte#') >= 0) {
+  if (hasTag(message, '#supprimercompte#')) {
     return Merchant
       .findAndRemove({moojPhone: phone})
       .exec();
@@ -31,7 +34,7 @@ var createDeal = function (phone, message, timestamp) {
       .then(function (merchant) {
 
         // Supprimer le dernier deal
-        if (message.toLowerCase().indexOf('#supprimerdernier#') >= 0) {
+        if (hasTag(message, '#supprimerdernier#')) {
           return Deal
             .findOneAndRemove({
               merchant: mongoose.Types.ObjectId(merchant[0]._id)
@@ -40,7 +43,7 @@ var createDeal = function (phone, message, timestamp) {
             .exec();
         }
         // Supprimer tous les deals
-        else if (message.toLowerCase().indexOf('#supprimertous#') >= 0) {
+        else if (hasTag(message, '#supprimertous#')) {
           return Deal
             .findAndRemove({
               merchant: mongoose.Types.ObjectId(merchant[0]._id)
@@ -52,7 +55,9 @@ var createDeal = function (phone, message, timestamp) {
 
           deal.actions = {};
 
-          deal.actions.call = (merchant.preferences && merchant.preferences.call) || message.toLowerCase().indexOf('#appeler#') >= 0;
+          deal.actions.call = (merchant.preferences && merchant.preferences.call) || hasTag(message, '#appeler#');
+          deal.actions.uber = (merchant.preferences && merchant.preferences.uber) || hasTag(message, '#uber#');
+          deal.actions.lafourchette = (merchant.preferences && merchant.preferences.lafourchette) || hasTag(message, '#fourchette#');
 
           deal.description = filterTags(message);
           deal.timestamp = timestamp || date.getTime();
