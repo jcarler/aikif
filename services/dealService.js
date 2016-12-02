@@ -3,7 +3,7 @@ var Merchant = require('../models/merchant');
 var Deal = require('../models/deal');
 var _ = require('lodash');
 
-var tags = ['#appeler#', '#uber#', '#fourchette#'];
+var tags = ['#appeler#', '#reserversms#', '#uber#', '#fourchette#'];
 
 function filterTags(sms) {
   tags.forEach(function (tag) {
@@ -23,16 +23,16 @@ function hasTag(message, tag) {
 function getExternalLinks(message, merchant) {
   var externalLinks = [];
 
-  if((merchant.preferences && merchant.preferences.uber) || hasTag(message, '#uber#')) {
-    var uberLink = _.filter(merchant.externalLinks, function(externalLink) {
+  if ((merchant.preferences && merchant.preferences.uber) || hasTag(message, '#uber#')) {
+    var uberLink = _.filter(merchant.externalLinks, function (externalLink) {
       return externalLink.code === 'uber';
     });
 
     externalLinks = externalLinks.concat(uberLink);
   }
 
-  if((merchant.preferences && merchant.preferences.lafourchette) || hasTag(message, '#fourchette#')) {
-    var fourchetteLink = _.filter(merchant.externalLinks, function(externalLink) {
+  if ((merchant.preferences && merchant.preferences.lafourchette) || hasTag(message, '#fourchette#')) {
+    var fourchetteLink = _.filter(merchant.externalLinks, function (externalLink) {
       return externalLink.code === 'lafourchette';
     });
 
@@ -81,6 +81,7 @@ var createDeal = function (phone, message, timestamp) {
 
 
           deal.actions.call = (merchant.preferences && merchant.preferences.call) || hasTag(message, '#appeler#');
+          deal.actions.reserversms = (merchant.preferences && merchant.preferences.reserversms) || hasTag(message, '#reserversms#');
 
           deal.description = filterTags(message);
           deal.timestamp = timestamp || date.getTime();
