@@ -77,7 +77,7 @@ var createDeal = function (phone, message, timestamp) {
           var deal = new Deal();      // create a new instance of the Deal model
 
           deal.actions = {};
-          deal.externalLinks = getExternalLinks(message, merchant);
+          deal.externalLinks = getExternalLinks(message, merchant[0]);
 
 
           deal.actions.call = (merchant.preferences && merchant.preferences.call) || hasTag(message, '#appeler#');
