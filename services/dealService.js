@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Merchant = require('../models/merchant');
 var Deal = require('../models/deal');
+var _ = require('lodash');
 
 var tags = ['#appeler#', '#uber#', '#fourchette#'];
 
@@ -17,6 +18,28 @@ function filterTags(sms) {
 
 function hasTag(message, tag) {
   return message.toLowerCase().indexOf(tag) >= 0;
+}
+
+function getExternalLinks(message, merchant) {
+  var externalLinks = [];
+
+  if((merchant.preferences && merchant.preferences.uber) || hasTag(message, '#uber#')) {
+    var uberLink = _.filter(merchant.externalLinks, function(externalLink) {
+      return externalLink.code === 'uber';
+    });
+
+    externalLinks = externalLinks.concat(uberLink);
+  }
+
+  if((merchant.preferences && merchant.preferences.lafourchette) || hasTag(message, '#fourchette#')) {
+    var fourchetteLink = _.filter(merchant.externalLinks, function(externalLink) {
+      return externalLink.code === 'lafourchette';
+    });
+
+    externalLinks = externalLinks.concat(fourchetteLink);
+  }
+
+  return externalLinks;
 }
 
 var createDeal = function (phone, message, timestamp) {
@@ -54,10 +77,10 @@ var createDeal = function (phone, message, timestamp) {
           var deal = new Deal();      // create a new instance of the Deal model
 
           deal.actions = {};
+          deal.externalLinks = getExternalLinks(message, merchant);
+
 
           deal.actions.call = (merchant.preferences && merchant.preferences.call) || hasTag(message, '#appeler#');
-          deal.actions.uber = (merchant.preferences && merchant.preferences.uber) || hasTag(message, '#uber#');
-          deal.actions.lafourchette = (merchant.preferences && merchant.preferences.lafourchette) || hasTag(message, '#fourchette#');
 
           deal.description = filterTags(message);
           deal.timestamp = timestamp || date.getTime();
