@@ -176,6 +176,8 @@ router.get('/', function (req, res) {
     });
 });
 
+
+// Create a deal
 router.post('/', function (req, res) {
 
   dealService.createDeal(req.body.moojPhone, req.body.description)
@@ -187,6 +189,8 @@ router.post('/', function (req, res) {
 
 });
 
+
+// Delete all deals
 router.delete('/', function (req, res) {
   Deal
     .remove()
@@ -198,6 +202,7 @@ router.delete('/', function (req, res) {
 });
 
 
+// Get a deal
 router.get('/:id', function (req, res) {
   Deal
     .getById(req.params.id)
@@ -209,6 +214,8 @@ router.get('/:id', function (req, res) {
     });
 });
 
+
+// Delete a deal
 router.delete('/:id', function (req, res) {
   Deal
     .findByIdAndRemove(req.params.id)
