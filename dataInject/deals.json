@@ -1,13 +1,13 @@
 [
   {
     "name": "Café Oz",
-    "description": "Happy Hour, toutes les pintes à 4€ jusque 21H",
+    "description": "Happy Hour, toutes les pintes à 4€ jusque 21H #uber#",
     "moojPhone": "0320551515",
     "timestampGap": 19379000
   },
   {
     "name": "L'aeronef",
-    "description": "Concert de GYM dès 21H, il reste des places #appeler# #uber#",
+    "description": "Concert de ROCKY dès 21H, il reste des places #appeler# #fnac#",
     "moojPhone": "0320135000",
     "timestampGap": 16079000
   },
@@ -37,7 +37,7 @@
   },
   {
     "name": "Amarine",
-    "description": "Venez avant 19H30, le café est offert",
+    "description": "Venez avant 19H30, le café est offert #appeler#",
     "moojPhone": "0320669353",
     "timestampGap": 18899000
   },
@@ -61,7 +61,7 @@
   },
   {
     "name": "Auchan",
-    "description": "Les 25 jours Auchan commencent aujourd'hui",
+    "description": "Les 25 jours Auchan commencent aujourd'hui #uber#",
     "moojPhone": "0320676222",
     "timestampGap": 23639000
   },
@@ -109,7 +109,7 @@
   },
   {
     "name": "La Suite",
-    "description": "Ce soir, on ouvre à 23h,  on vous attend",
+    "description": "Ce soir, on ouvre à 23h,  on vous attend #uber#",
     "moojPhone": "0320062217",
     "timestampGap": 10319000
   },
@@ -163,7 +163,7 @@
   },
   {
     "name": "Amarine",
-    "description": "Notre menu Moussaillon a changé, venez avec vos enfants",
+    "description": "Notre menu Moussaillon a changé, venez avec vos enfants #appeler#",
     "moojPhone": "0661877503",
     "timestampGap": 19319000
   },
@@ -277,7 +277,7 @@
   },
     {  
       "name":"Zodio",
-      "description":"Il reste 2 places pour notre cours de cuisine de 16H, venez faire des sablés avec notre chef Marco  #appeler#",
+      "description":"Il reste 2 places pour notre cours de cuisine de 16H, venez faire des sablés avec notre chef Marco  #sms#",
       "moojPhone":"0661877522",
       "timestampGap":34319000
    },
