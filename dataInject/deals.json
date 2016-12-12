@@ -91,7 +91,7 @@
   },
   {
     "name": "SushiShop",
-    "description": "Jour de match, pensez à commander tôt pour être sur de profiter de vos sushis #appeler#",
+    "description": "Jour de match, pensez à commander tôt pour être sur de profiter de vos sushis #appeler##mail#",
     "moojPhone": "0320876068",
     "timestampGap": 19439000
   },
@@ -175,7 +175,7 @@
   },
   {
     "name": "Body minute",
-    "description": "Suite à une annulation, on a un créneau à 17H, envie d'essayer? #appeler#",
+    "description": "Suite à une annulation, on a un créneau à 17H, envie d'essayer? #appeler##mail#",
     "moojPhone": "0661877505",
     "timestampGap": 30839000
   },
@@ -187,7 +187,7 @@
   },
   {
     "name": "LCL",
-    "description": "Offres Enfants 0-17 ans : 15€ offerts pour l'ouverture de son premier compte d'épargne",
+    "description": "Offres Enfants 0-17 ans : 15€ offerts pour l'ouverture de son premier compte d'épargne#mail#",
     "moojPhone": "0661877507",
     "timestampGap": 52979000
   },
@@ -259,7 +259,7 @@
   },
   {
     "name": "Instan Sun",
-    "description": "Venez découvrir nos nouveles cabines #appeler#",
+    "description": "Venez découvrir nos nouveles cabines #appeler##mail#",
     "moojPhone": "0661877519",
     "timestampGap": 51779000
   },
