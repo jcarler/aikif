@@ -7,7 +7,8 @@ var DealSchema = new Schema({
   timestamp: Number,
   actions: {
     call: Boolean,
-    sms: Boolean
+    sms: Boolean,
+    mail: Boolean
   },
   externalLinks: [{
     code: String,

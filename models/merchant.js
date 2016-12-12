@@ -27,6 +27,8 @@ var MerchantSchema = new Schema({
   imageLink: String,
   preferences: {
     call: Boolean,
+    sms: Boolean,
+    mail: Boolean,
     uber: Boolean,
     lafourchette: Boolean
   },

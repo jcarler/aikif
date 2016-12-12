@@ -3,7 +3,7 @@ var Merchant = require('../models/merchant');
 var Deal = require('../models/deal');
 var _ = require('lodash');
 
-var tags = ['#appeler#', '#sms#', '#uber#', '#fourchette#','#fnac#'];
+var tags = ['#appeler#', '#sms#', '#mail#', '#uber#', '#fourchette#', '#fnac#'];
 
 function filterTags(sms) {
   tags.forEach(function (tag) {
@@ -90,6 +90,7 @@ var createDeal = function (phone, message, timestamp) {
 
           deal.actions.call = (merchant.preferences && merchant.preferences.call) || hasTag(message, '#appeler#');
           deal.actions.sms = (merchant.preferences && merchant.preferences.sms) || hasTag(message, '#sms#');
+          deal.actions.mail = (merchant.preferences && merchant.preferences.mail) || hasTag(message, '#mail#');
 
           deal.description = filterTags(message);
           deal.timestamp = timestamp || date.getTime();
