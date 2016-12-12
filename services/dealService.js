@@ -3,7 +3,7 @@ var Merchant = require('../models/merchant');
 var Deal = require('../models/deal');
 var _ = require('lodash');
 
-var tags = ['#appeler#', '#sms#', '#uber#', '#fourchette#'];
+var tags = ['#appeler#', '#sms#', '#uber#', '#fourchette#','#fnac#'];
 
 function filterTags(sms) {
   tags.forEach(function (tag) {
@@ -37,6 +37,14 @@ function getExternalLinks(message, merchant) {
     });
 
     externalLinks = externalLinks.concat(fourchetteLink);
+  }
+
+  if ((merchant.preferences && merchant.preferences.fnac) || hasTag(message, '#fnac#')) {
+    var fnacLink = _.filter(merchant.externalLinks, function (externalLink) {
+      return externalLink.code === 'fnac';
+    });
+
+    externalLinks = externalLinks.concat(fnacLink);
   }
 
   return externalLinks;
