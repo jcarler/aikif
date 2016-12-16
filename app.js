@@ -31,7 +31,14 @@ app.use(function (req, res, next) {
   next();
 });
 
-mongoose.connect(config.database);
+var options = {
+  server: {socketOptions: {keepAlive: 300000, connectTimeoutMS: 30000}},
+  replset: {socketOptions: {keepAlive: 300000, connectTimeoutMS: 30000}}
+};
+
+mongoose.connect(config.database, options);
+
+var conn = mongoose.connection;
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -58,7 +65,6 @@ app.use('/init', init);
 app.use('/services', services);
 app.use('/categories', categories);
 app.use('/macrocategories', macrocategories);
-
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -90,6 +96,5 @@ app.use(function (err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;
