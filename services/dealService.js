@@ -3,7 +3,7 @@ var Merchant = require('../models/merchant');
 var Deal = require('../models/deal');
 var _ = require('lodash');
 
-var tags = ['#appeler#', '#sms#', '#mail#', '#uber#', '#fourchette#', '#fnac#'];
+var tags = ['#appeler#', '#sms#', '#mail#', '#uber#', '#fourchette#', '#fnac#', '#deliveroo#'];
 
 function filterTags(sms) {
   tags.forEach(function (tag) {
@@ -45,6 +45,14 @@ function getExternalLinks(message, merchant) {
     });
 
     externalLinks = externalLinks.concat(fnacLink);
+  }
+
+  if ((merchant.preferences && merchant.preferences.deliveroo) || hasTag(message, '#deliveroo#')) {
+    var deliverooLink = _.filter(merchant.externalLinks, function (externalLink) {
+      return externalLink.code === 'deliveroo';
+    });
+
+    externalLinks = externalLinks.concat(deliverooLink);
   }
 
   return externalLinks;
