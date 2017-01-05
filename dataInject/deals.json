@@ -43,7 +43,7 @@
   },
   {
     "name": "La Petite table",
-    "description": "#pdj Dos caillaud et ses petites légumes : 12€ #fourchette#",
+    "description": "#pdj Dos caillaud et ses petites légumes : 12€ #fourchette# #deliveroo#",
     "moojPhone": "0320556047",
     "timestampGap": 46859000
   },
@@ -127,7 +127,7 @@
   },
   {
     "name": "Baan Boon",
-    "description": "#pdj Curry rouge => 8€",
+    "description": "#pdj Curry rouge => 8€ #deliveroo#",
     "moojPhone": "0320588176",
     "timestampGap": 45359000
   },
@@ -355,13 +355,13 @@
   },
   {
     "name": "Musée d'Histoire Naturelle",
-    "description": "A 15H, notre visite guidée pour les enfants, pensez à réserver",
+    "description": "A 15H, notre visite guidée pour les enfants, pensez à réserver #appeler#",
     "moojPhone": "0661877578",
     "timestampGap": 33903000
   },
   {
-    "name": "RCL",
-    "description": "Il reste des places pour ce soir. Lens Valenciennes, l'affiche de L2, ce soir à 21H",
+    "name": "LOSC",
+    "description": "Il reste des places pour ce soir. LOSC Valenciennes, l'affiche de L2, ce soir à 21H",
     "moojPhone": "0661877576",
     "timestampGap": 26523000
   },
@@ -385,7 +385,7 @@
   },
   {
     "name": "Le Comptoir Volant",
-    "description": "Aujourd'hui, notre truck est sur le parking de B'twin Village. N'oubliez pas que vous pouvez réserver votre Burger ",
+    "description": "Aujourd'hui, notre truck est sur le parking de B'twin Village. N'oubliez pas que vous pouvez réserver votre Burger #appeler# ",
     "moojPhone": "0661877571",
     "timestampGap": 47459000
   },
