@@ -149,6 +149,7 @@ router.get('/:id/deals', function (req, res) {
 
       Deal
         .find({merchant: {$in: merchantIds}})
+        .where('timestamp').lt(actualTimestamp)
         .where('timestamp').gt(lastDayTimestamp)
         .populate({
           path: 'merchant',
