@@ -56,6 +56,7 @@ router.get('/', function (req, res) {
         .find({'merchant': {$in: merchantsIds}})
         .sort({timestamp: -1})
         .limit(maxItems)
+        .where('timestamp').lt(actualTimestamp)
         .where('timestamp').gt(lastDayTimestamp)
         .populate({
           path: 'merchant',

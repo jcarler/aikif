@@ -10,10 +10,14 @@ var router = express.Router();
 
 
 router.get('/', function (req, res) {
-  var date = new Date();
-  var day = date.getDate();
-  var month = date.getMonth();
-  var year = date.getFullYear();
+  var today = new Date();
+  var tomorrow = new Date();
+
+  tomorrow.setDate(today.getDate() + 1);
+
+  var day = tomorrow.getDate();
+  var month = today.getMonth();
+  var year = today.getFullYear();
   var antiDate = new Date(year, month, day);
 
   dealsFile.forEach(function (dealInjected) {
