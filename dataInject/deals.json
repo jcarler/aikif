@@ -43,7 +43,7 @@
   },
   {
     "name": "La Petite table",
-    "description": "#pdj Dos caillaud et ses petites légumes : 12€ #fourchette# #deliveroo#",
+    "description": "#pdj Dos caillaud et ses petites légumes : 12€ #fourchette#",
     "moojPhone": "0320556047",
     "timestampGap": 46859000
   },
@@ -115,7 +115,7 @@
   },
   {
     "name": "Aux Merveilleux",
-    "description": "2 merveilleux achetés, un Incroyable offert, c'est le moment de découvrir #deliveroo#",
+    "description": "2 merveilleux achetés, un Incroyable offert, c'est le moment de découvrir #appeler#",
     "moojPhone": "0320572558",
     "timestampGap": 29639000
   },
@@ -127,7 +127,7 @@
   },
   {
     "name": "Baan Boon",
-    "description": "#pdj Curry rouge => 8€ #deliveroo#",
+    "description": "#pdj Curry rouge => 8€ #appeler#",
     "moojPhone": "0320588176",
     "timestampGap": 45359000
   },
@@ -343,7 +343,7 @@
   },
   {
     "name": "John Doe Escape Game",
-    "description": "Envie de tenter l'aventure? Jusque 16H, c'est -10%",
+    "description": "Envie de tenter l'aventure? Jusque 16H, c'est -10% #appeler#",
     "moojPhone": "0661877570",
     "timestampGap": 49319000
   },
@@ -389,6 +389,18 @@
     "moojPhone": "0661877571",
     "timestampGap": 47459000
   },
+  {"name":"Bloempot","description":"Notre Formule à 19.50 € : Entrée-Plat ou Plat-Dessert","moojPhone":"0661877555","timestampGap":46079000}
+  {"name":"Au diable des plaisirs","description":"#pdj Escalope forestière et ses frites maison , 12€","moojPhone":"0661877559","timestampGap":43679000}
+  {"name":"Racine Carée","description":"Et si vous offriez des fleurs à votre dulcinée? -20% sur nos bouquets composés","moojPhone":"0661877562","timestampGap":86399000}
+  {"name":"Open Flor","description":"L'offre du jour? les 12 tulipes à 6 euros","moojPhone":"0661877563","timestampGap":47579000}
+  {"name":"UGC","description":"L'avant premiere de Star Waes VIII, c'est ce soir à 19H","moojPhone":"0661877564","timestampGap":86399000}
+  {"name":"La Lisonne","description":"Dédicace de Marion Billet à partir de 17 H","moojPhone":"0661877565","timestampGap":86399000}
+  {"name":"Planête mômes","description":"Et si vous veniez vous détendre avec vos enfants ","moojPhone":"0661877567","timestampGap":86399000}
+  {"name":"Big Fernand","description":"Il est toujours l'heure pour un Hamburgé #deliveroo#","moojPhone":"0661877568","timestampGap":86399000}
+  {"name":"Opéra de Lille","description":"Envie d'une soirée exceptionnelle, il reste des places Arsilda ce soir","moojPhone":"0661877569","timestampGap":86399000}
+  {"name":"Meet People","description":"Sur place où chez vous, goutez notre Pad Thai #deliveroo#","moojPhone":"0661877580","timestampGap":42119000}
+  {"name":"Akira","description":"Ce soir on est plein, mais vous pouvez toujours vous faire livrer #deliveroo#","moojPhone":"0661877581","timestampGap":16319000}
+  {"name":"Le Palermo","description":"Jusque 12H, une pizza commandée en livraison=1 pizza offerte #deliveroo#","moojPhone":"0661877582","timestampGap":44519000}
   {
     "name": "Université Lille 3",
     "description": "Au Kino ce soir, l'avant première du film DEMAIN",
