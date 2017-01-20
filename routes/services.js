@@ -18,7 +18,6 @@ router.post('/apiAi', function (req, res, next) {
 
   console.log(req.body.result);
   console.log(req.body.result.parameters);
-  console.log(req.body.result.parameters.geo-city);
 
   res.json({
     "speech": "Voici les deals à ",
