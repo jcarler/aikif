@@ -14,4 +14,12 @@ router.post('/sms', function (req, res, next) {
 
 });
 
+router.post('/apiAi', function (req, res, next) {
+
+  console.log(req);
+
+  res.send(req);
+
+});
+
 module.exports = router;
