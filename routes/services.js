@@ -20,6 +20,16 @@ router.post('/apiAi', function (req, res, next) {
     var string = JSON.stringify(req.body.result.parameters);
     var params = JSON.parse(string);
 
+    dealService.getDeals().then(function (deals) {
+      var deal = deals[0];
+
+      res.json({
+        "speech": deal.merchant.pseudo + " vous propose " + deal.description + ". Vous pouvez les joindre au " + deal.merchant.phone,
+        "displayText": deal.merchant.pseudo + " vous propose " + deal.description + ". Vous pouvez les joindre au " + deal.merchant.phone,
+        "source": "mooj"
+      });
+    });
+
     console.log("stringify", params);
     console.log("stringify params", params["geo-city"]);
 

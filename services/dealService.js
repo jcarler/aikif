@@ -113,5 +113,10 @@ var createDeal = function (phone, message, timestamp) {
 };
 
 module.exports = {
-  createDeal: createDeal
+  createDeal: createDeal,
+  getDeals: function () {
+    return Deal.find().exec().then(function (deals) {
+      return deals;
+    });
+  }
 };
