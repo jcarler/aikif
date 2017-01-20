@@ -16,11 +16,14 @@ router.post('/sms', function (req, res, next) {
 
 router.post('/apiAi', function (req, res, next) {
 
-  try {
-    var string = JSON.stringify(req.body.result.parameters);
-    var params = JSON.parse(string);
+  var string = JSON.stringify(req.body.result.parameters);
+  var params = JSON.parse(string);
 
-    dealService.getDeals().then(function (deals) {
+  var city = params["geo-city"];
+
+  dealService
+    .getDeals()
+    .then(function (deals) {
       var deal = deals[0];
 
       res.json({
@@ -29,20 +32,6 @@ router.post('/apiAi', function (req, res, next) {
         "source": "mooj"
       });
     });
-
-    console.log("stringify", params);
-    console.log("stringify params", params["geo-city"]);
-
-  }
-  catch (e) {
-    console.log(e);
-  }
-
-  res.json({
-    "speech": "Voici les deals à ",
-    "displayText": "Voici les deals à ",
-    "source": "mooj"
-  });
 
 });
 
