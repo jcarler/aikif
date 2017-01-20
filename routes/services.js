@@ -16,11 +16,9 @@ router.post('/sms', function (req, res, next) {
 
 router.post('/apiAi', function (req, res, next) {
 
-  console.log(req.body);
-
   res.json({
-    "speech": "Hello Darkness my old friend",
-    "displayText": "Hello darkness my old fried",
+    "speech": "Voici les deals à " + req.body.result.parameters.geo-city,
+    "displayText": "Voici les deals à " + req.body.result.parameters.geo-city,
     "source": "mooj"
   });
 
