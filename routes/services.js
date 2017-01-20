@@ -16,9 +16,13 @@ router.post('/sms', function (req, res, next) {
 
 router.post('/apiAi', function (req, res, next) {
 
-  console.log(req);
+  console.log(req.body.results.parameters);
 
-  res.send(req);
+  res.send({
+    "speech": "Hello Darkness my old friend",
+    "displayText": "Hello darkness my old fried",
+    "source": "mooj"
+  });
 
 });
 
