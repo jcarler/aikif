@@ -21,12 +21,9 @@ router.post('/apiAi', function (req, res, next) {
 
   try {
     var params = JSON.stringify(req.body.result.parameters);
-    var param2 = JSON.parse(req.body.result.parameters);
 
     console.log("stringify", params);
-    console.log("parse", param2);
     console.log("stringify params", params.geo-city);
-    console.log("parse params", param2.geo-city);
 
   }
   catch (e) {
