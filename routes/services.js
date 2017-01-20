@@ -19,13 +19,15 @@ router.post('/apiAi', function (req, res, next) {
   console.log(req.body.result.parameters);
 
 
-  try{
+  try {
     var params = JSON.stringify(req.body.result.parameters);
     var param2 = JSON.parse(req.body.result.parameters);
 
     console.log(params);
     console.log(param2);
-
+  }
+  catch (e) {
+    console.log(e)
   }
 
   res.json({
