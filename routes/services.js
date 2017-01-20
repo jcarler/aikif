@@ -16,14 +16,11 @@ router.post('/sms', function (req, res, next) {
 
 router.post('/apiAi', function (req, res, next) {
 
-  console.log(req.body.result.parameters);
-
-
   try {
     var params = JSON.stringify(req.body.result.parameters);
 
     console.log("stringify", params);
-    console.log("stringify params", params.geo-city);
+    console.log("stringify params", params["geo-city"]);
 
   }
   catch (e) {
