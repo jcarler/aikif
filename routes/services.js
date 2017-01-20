@@ -16,11 +16,13 @@ router.post('/sms', function (req, res, next) {
 
 router.post('/apiAi', function (req, res, next) {
 
-  console.log(req.body.result);
+  var params = JSON.parse(req.body.result.parameters);
+
+  console.log(params);
 
   res.json({
-    "speech": "Voici les deals à " + req.body.result.parameters.geo-city,
-    "displayText": "Voici les deals à " + req.body.result.parameters.geo-city,
+    "speech": "Voici les deals à " + params.geo-city,
+    "displayText": "Voici les deals à " + params.geo-city,
     "source": "mooj"
   });
 
