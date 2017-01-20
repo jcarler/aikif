@@ -115,8 +115,19 @@ var createDeal = function (phone, message, timestamp) {
 module.exports = {
   createDeal: createDeal,
   getDeals: function () {
-    return Deal.find().exec().then(function (deals) {
-      return deals;
-    });
+    return Deal
+      .find()
+      .populate({
+        path: 'merchant',
+        model: 'Merchant',
+        populate: {
+          path: 'category',
+          model: 'Category'
+        }
+      })
+      .exec()
+      .then(function (deals) {
+        return deals;
+      });
   }
 };
