@@ -16,8 +16,17 @@ router.post('/sms', function (req, res, next) {
 
 router.post('/apiAi', function (req, res, next) {
 
-  console.log(req.body.result);
   console.log(req.body.result.parameters);
+
+
+  try{
+    var params = JSON.stringify(req.body.result.parameters);
+    var param2 = JSON.parse(req.body.result.parameters);
+
+    console.log(params);
+    console.log(param2);
+
+  }
 
   res.json({
     "speech": "Voici les deals à ",
