@@ -31,7 +31,8 @@ var MerchantSchema = new Schema({
     mail: Boolean,
     uber: Boolean,
     lafourchette: Boolean,
-    deliveroo: Boolean
+    deliveroo: Boolean,
+    messenger: Boolean
   },
   externalLinks: [{
     code: String,
