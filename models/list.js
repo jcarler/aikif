@@ -14,7 +14,7 @@ ListSchema.statics.getAll = function () {
   return this
     .find({})
     .populate({
-      path: 'merchant',
+      path: 'merchants',
       model: 'Merchant',
       populate: {
         path: 'category',
@@ -27,7 +27,7 @@ ListSchema.statics.getById = function (id) {
   return this
     .findById(id)
     .populate({
-      path: 'merchant',
+      path: 'merchants',
       model: 'Merchant',
       populate: {
         path: 'category',
