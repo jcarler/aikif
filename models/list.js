@@ -13,13 +13,27 @@ var ListSchema = new Schema({
 ListSchema.statics.getAll = function () {
   return this
     .find({})
-    .populate('merchants');
+    .populate({
+      path: 'merchant',
+      model: 'Merchant',
+      populate: {
+        path: 'category',
+        model: 'Category'
+      }
+    });
 };
 
 ListSchema.statics.getById = function (id) {
   return this
     .findById(id)
-    .populate('merchants');
+    .populate({
+      path: 'merchant',
+      model: 'Merchant',
+      populate: {
+        path: 'category',
+        model: 'Category'
+      }
+    });
 };
 
 module.exports = mongoose.model('List', ListSchema);
