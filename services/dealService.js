@@ -3,7 +3,7 @@ var Merchant = require('../models/merchant');
 var Deal = require('../models/deal');
 var _ = require('lodash');
 
-var tags = ['#appeler#', '#sms#', '#mail#', '#uber#', '#fourchette#', '#fnac#', '#deliveroo#', '#messenger'];
+var tags = ['#appeler#', '#sms#', '#mail#', '#uber#', '#fourchette#', '#fnac#', '#deliveroo#', '#messenger#'];
 
 function filterTags(sms) {
   tags.forEach(function (tag) {
