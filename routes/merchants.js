@@ -14,6 +14,7 @@ router.get('/', function (req, res) {
   var query = {};
   var category = req.query.category;
   var userId = req.query.userId;
+  var limit = req.query.limit || 50;
 
   if (category) {
     query.category = {$in: category.split(',')}
@@ -36,6 +37,7 @@ router.get('/', function (req, res) {
     .then(function (query) {
       Merchant
         .find(query)
+        .limit(limit)
         .populate('company')
         .populate('category')
         .lean()
