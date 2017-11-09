@@ -1,5 +1,5 @@
 
 module.exports = {
   'secret': 'maintenantoujamaissecret',
-  'database': 'mongodb://mooj:mooj@ds025792.mlab.com:25792/mooj'
+  'database': 'mongodb://mooj:mooj@ds149535.mlab.com:49535/aikif'
 };
